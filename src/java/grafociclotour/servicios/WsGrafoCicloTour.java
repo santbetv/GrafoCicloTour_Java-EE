@@ -43,10 +43,10 @@ public class WsGrafoCicloTour {
     }
 
     @WebMethod(operationName = "crearVertice")
-    public String crearVertice(@WebParam(name = "ciudad") Municipio ciudad) {
+    public String crearVertice(@WebParam(name = "municipio") Municipio municipio) {
         controlGrafo.getGrafoND().adicionarVertice(
                 new Vertice(controlGrafo.getGrafoND().getVertices().size() + 1,
-                        ciudad));
+                        municipio));
         return "Vertice creado";
     }
 
@@ -82,14 +82,11 @@ public class WsGrafoCicloTour {
     //Buscar por codigo
     @WebMethod(operationName = "obtenerRutaMasCortaXCodigo")
     public List<Vertice> obtenerRutaMasCortaXCodigo(@WebParam(name = "inicio") int inicio, @WebParam(name = "destino") int destino) {
-        List<Vertice> ciudades = new ArrayList<>();
+        List<Vertice> municipios = new ArrayList<>();
         if (destino != inicio) {
             Dijkstra dijstra = new Dijkstra(controlGrafo.getGrafoND(), controlGrafo.getGrafoND().obtenerVerticexCodigo(inicio), controlGrafo.getGrafoND().obtenerVerticexCodigo(destino));
-            ciudades = dijstra.calcularRutaMasCorta();
-        } else {
-
+            municipios = dijstra.calcularRutaMasCorta();
         }
-        return ciudades;
+        return municipios;
     }
-
 }

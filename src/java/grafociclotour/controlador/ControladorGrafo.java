@@ -48,7 +48,7 @@ public class ControladorGrafo implements Serializable {
     private GrafoNoDirigido grafoND;
     private DefaultDiagramModel model;
     private DefaultDiagramModel mode2;
-    private Municipio ciudad = new Municipio();
+    private Municipio municipio = new Municipio();
     private boolean suspendEvent;
     private List<Vertice> rutaCorta;
     private int codigoInicio = 0;
@@ -59,16 +59,16 @@ public class ControladorGrafo implements Serializable {
     }
 
     //Getter and Setter
+    public Municipio getMunicipio() {
+        return municipio;
+    }
+
+    public void setMunicipio(Municipio municipio) {
+        this.municipio = municipio;
+    }
+
     public DefaultDiagramModel getMode2() {
         return mode2;
-    }
-
-    public Municipio getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(Municipio ciudad) {
-        this.ciudad = ciudad;
     }
 
     public GrafoNoDirigido getGrafoND() {
@@ -119,11 +119,11 @@ public class ControladorGrafo implements Serializable {
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
                 new Municipio("Manizales", 4, 4)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Quindio", 10, 10)));
+                new Municipio("Neira", 10, 10)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Bogota D.C", 20, 10)));
+                new Municipio("Chinchiná", 20, 10)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Pereira", 30, 4)));
+                new Municipio("Palestina", 30, 4)));
 
 //        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
 //                new Municipio("O", 500000, 140000, 4, 6, 120)));
@@ -298,26 +298,23 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
-    public void adicionarCiudad() {
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1, ciudad));
+    public void adicionarMunicipio() {
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1, municipio));
         listados();
-        if (ciudadMasJoven != null) {
-            ciudadMasJoven.clear();
-        }
-        JsfUtil.addSuccessMessage("Ciudad Adicionada");
-        ciudad = new Municipio();
+        JsfUtil.addSuccessMessage("Municipio Adicionada");
+        municipio = new Municipio();
         pintarGrafo(grafoND);
     }
 
-    public void limpiarCiudad() {
+    public void limpiarMunicipio() {
         listados();
-        ciudad = new Municipio();
+        municipio = new Municipio();
 
     }
 
     private EndPoint createRectangleEndPoint(EndPointAnchor anchor) {
         RectangleEndPoint endPoint = new RectangleEndPoint(anchor);
-        endPoint.setScope("ciudad");
+        endPoint.setScope("municipio");
         endPoint.setSource(true);
         endPoint.setStyle("{fillStyle:'#404a4e'}");
         endPoint.setHoverStyle("{fillStyle:'#404a4e'}");
@@ -327,7 +324,7 @@ public class ControladorGrafo implements Serializable {
 
     private EndPoint createRectangleEndPointDeRutaCorta(EndPointAnchor anchor) {
         RectangleEndPoint endPoint = new RectangleEndPoint(anchor);
-        endPoint.setScope("ciudad");
+        endPoint.setScope("municipio");
         endPoint.setSource(true);
         endPoint.setStyle("{fillStyle:'red'}");
         endPoint.setHoverStyle("{fillStyle:'red'}");
@@ -353,7 +350,7 @@ public class ControladorGrafo implements Serializable {
             pintarGrafo(grafoND);
             FacesContext.getCurrentInstance().addMessage(null, msg);
             PrimeFaces.current().ajax().update("frmGrafo");
-            PrimeFaces.current().ajax().update("frmCiudad");
+            PrimeFaces.current().ajax().update("frmMunicipio");
         } else {
             suspendEvent = false;
         }
@@ -371,7 +368,7 @@ public class ControladorGrafo implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         PrimeFaces.current().ajax().update("frmGrafo");
-        PrimeFaces.current().ajax().update("frmCiudad");
+        PrimeFaces.current().ajax().update("frmMunicipio");
         listados();
     }
 
@@ -399,14 +396,14 @@ public class ControladorGrafo implements Serializable {
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
         PrimeFaces.current().ajax().update("frmGrafo");
-        PrimeFaces.current().ajax().update("frmCiudad");
+        PrimeFaces.current().ajax().update("frmMunicipio");
         suspendEvent = true;
         listados();
     }
 
     private EndPoint createDotEndPoint(EndPointAnchor anchor) {
         DotEndPoint endPoint = new DotEndPoint(anchor);
-        endPoint.setScope("ciudad");
+        endPoint.setScope("municipio");
         endPoint.setTarget(true);
         endPoint.setStyle("{fillStyle:'#98AFC7'}");
         endPoint.setHoverStyle("{fillStyle:'#5C738B'}");
@@ -416,7 +413,7 @@ public class ControladorGrafo implements Serializable {
 
     private EndPoint createDotEndPointDeRutaCorta(EndPointAnchor anchor) {
         DotEndPoint endPoint = new DotEndPoint(anchor);
-        endPoint.setScope("ciudad");
+        endPoint.setScope("municipio");
         endPoint.setTarget(true);
         endPoint.setStyle("{fillStyle:'red'}");
         endPoint.setHoverStyle("{fillStyle:'red'}");
@@ -512,52 +509,5 @@ public class ControladorGrafo implements Serializable {
             }
         }
         return con;
-    }
-
-    //nuevo
-    private List ciudadMasJoven;
-
-    public List getCiudadMasJoven() {
-        return ciudadMasJoven;
-    }
-
-    public void setCiudadMasJoven(List ciudadMasJoven) {
-        this.ciudadMasJoven = ciudadMasJoven;
-    }
-
-    public void buscarCiudadMasJo() {
-//        ciudadMasJoven = buscarCiudadMasJoven();
-    }
-
-//    public List buscarCiudadMasJoven() {
-//        int edadMenor = 0;
-//        List<String> nuevas = new ArrayList<>();
-//        for (Vertice vertice : grafoND.getVertices()) {
-//            if (edadMenor != 0) {
-//                if (vertice.getDato().getEdad() <= edadMenor) {
-//                    edadMenor = vertice.getDato().getEdad();
-//                    nuevas.clear();
-//                    nuevas.add("La ciudad de menor edad es: " + vertice.getDato().getNombre() + "\t" + "Numero de vias: " + contarAdya(vertice.getCodigo()));
-//                }
-//            } else {
-//                edadMenor = vertice.getDato().getEdad();
-////                nuevas.add("La de menor edad es: " + vertice.getDato().getNombre() + "\t" + "Numero de vias: " + contarAdya(vertice.getCodigo()));
-//            }
-//        }
-//        return nuevas;
-//    }
-    //Prueba de SOAP
-    private List prueba;
-
-    public List getPrueba() {
-        return prueba;
-    }
-
-    public void setPrueba(List prueba) {
-        this.prueba = prueba;
-    }
-
-    public void clickPrueba() {
-        prueba = grafoND.saludo();
     }
 }

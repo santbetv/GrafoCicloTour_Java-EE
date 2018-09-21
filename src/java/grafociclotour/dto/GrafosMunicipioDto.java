@@ -6,13 +6,13 @@ import java.io.Serializable;
 /**
  * @author Santiago Betancur
  */
-public class GrafosCidadesDto implements Serializable {
+public class GrafosMunicipioDto implements Serializable {
 
     //Atributos
     ControladorGrafo contGrafo = new ControladorGrafo();
 
     //Constructor
-    public GrafosCidadesDto() {
+    public GrafosMunicipioDto() {
     }
     //Getter and Setters
 

@@ -30,10 +30,6 @@
     <h:body>
 
         <h:form id="frmGrafo">
-
-            <p:inputTextarea value="#{controladorGrafo.prueba}" />
-            <p:commandButton value="clik" action="#{controladorGrafo.clickPrueba()}" update="frmGrafo"/>
-
             <p:growl id="grwErrores" showDetail="true"/>
             <p:panel id="pnlDiagram" header="Grafo No Dirigido "  >
                 <p:diagram value="#{controladorGrafo.model}" var="el" id="diagrama"  style="height:400px" styleClass="ui-widget-content" >
@@ -75,18 +71,18 @@
                     </p:dataTable>
                 </h:form>
             </p:tab>
-            <p:tab title="Crear Ciudad">
-                <h:form id="frmCiudad">
+            <p:tab title="Crear Municipio">
+                <h:form id="frmMunicipio">
                     <center>
                         <p:panelGrid columns="2">
                             <p:outputLabel value="Nombre:"/>
-                            <p:inputText required="true" value="#{controladorGrafo.ciudad.nombre}" />
+                            <p:inputText required="true" value="#{controladorGrafo.municipio.nombre}" />
                             <p:outputLabel value="Pos x:"/>
-                            <p:inputText required="true" value="#{controladorGrafo.ciudad.posx}"/>
+                            <p:inputText required="true" value="#{controladorGrafo.municipio.posx}"/>
                             <p:outputLabel value="Pos y:"/>
-                            <p:inputText required="true" value="#{controladorGrafo.ciudad.posy}"/>
-                            <p:commandButton ajax="false" value="Adicionar" action="#{controladorGrafo.adicionarCiudad()}" update="@all"/>
-                            <p:commandButton immediate="true" ajax="false" value="Cancelar" action="#{controladorGrafo.limpiarCiudad()}" update="@all"/>
+                            <p:inputText required="true" value="#{controladorGrafo.municipio.posy}"/>
+                            <p:commandButton ajax="false" value="Adicionar" action="#{controladorGrafo.adicionarMunicipio()}" update="@all"/>
+                            <p:commandButton immediate="true" ajax="false" value="Cancelar" action="#{controladorGrafo.limpiarMunicipio()}" update="@all"/>
 
                         </p:panelGrid>
                     </center>
