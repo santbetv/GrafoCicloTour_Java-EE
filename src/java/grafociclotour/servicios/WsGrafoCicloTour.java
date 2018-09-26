@@ -16,6 +16,8 @@ import grafociclotour.modelo.Municipio;
 import grafociclotour.modelo.Vertice;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -24,18 +26,20 @@ import javax.jws.WebParam;
  * @author Santiago Betancur
  */
 @WebService(serviceName = "WsGrafoCicloTour")
+@Stateless
 public class WsGrafoCicloTour {
 
+    @EJB
     private ControladorGrafo controlGrafo;
 
-    @WebMethod(operationName = "iniciarGrafo")
-    public String iniciarGrafo() {
-
-        controlGrafo = new ControladorGrafo();
-        controlGrafo.inicializar();
-
-        return "Grafo Iniciado";
-    }
+//    @WebMethod(operationName = "iniciarGrafo")
+//    public String iniciarGrafo() {
+//
+//        controlGrafo = new ControladorGrafo();
+//        controlGrafo.inicializar();
+//
+//        return "Grafo Iniciado";
+//    }
 
     @WebMethod(operationName = "listarVertices")
     public List<Vertice> listarVertices() {
@@ -47,6 +51,7 @@ public class WsGrafoCicloTour {
         controlGrafo.getGrafoND().adicionarVertice(
                 new Vertice(controlGrafo.getGrafoND().getVertices().size() + 1,
                         municipio));
+        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
         return "Vertice creado";
     }
 
@@ -57,6 +62,7 @@ public class WsGrafoCicloTour {
                 controlGrafo.getGrafoND().getVertices().remove(i);
             }
         }
+        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
         return "Vertice Borrado";
     }
 
@@ -76,6 +82,7 @@ public class WsGrafoCicloTour {
         } else {
             return "Origen NO existe";
         }
+        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
         return "Arista Creada";
     }
 
@@ -87,6 +94,7 @@ public class WsGrafoCicloTour {
             Dijkstra dijstra = new Dijkstra(controlGrafo.getGrafoND(), controlGrafo.getGrafoND().obtenerVerticexCodigo(inicio), controlGrafo.getGrafoND().obtenerVerticexCodigo(destino));
             municipios = dijstra.calcularRutaMasCorta();
         }
+        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
         return municipios;
     }
 }

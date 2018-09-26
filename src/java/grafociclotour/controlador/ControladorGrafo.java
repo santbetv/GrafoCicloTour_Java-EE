@@ -13,11 +13,11 @@ import grafociclotour.modelo.GrafoNoDirigido;
 import grafociclotour.modelo.Vertice;
 import grafociclotour.utilidad.JsfUtil;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
@@ -41,7 +41,7 @@ import org.primefaces.model.diagram.overlay.LabelOverlay;
  * @author Santiago Betancur
  */
 @Named(value = "controladorGrafo")
-@SessionScoped
+@Singleton
 public class ControladorGrafo implements Serializable {
 
     //Atributos
@@ -162,7 +162,7 @@ public class ControladorGrafo implements Serializable {
         //dijstra.calcularRutaMasCorta();
     }
 
-    private void pintarGrafo(GrafoAbstract grafo) {
+    public void pintarGrafo(GrafoAbstract grafo) {
         //int x = 4;
         //int y = 4;
         model = new DefaultDiagramModel();
