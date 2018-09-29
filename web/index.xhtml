@@ -27,22 +27,30 @@
             }
         </style>
     </h:head>
-    <h:body>
+    <h:body id="pnlInicio">
 
         <h:form id="frmGrafo">
             <p:growl id="grwErrores" showDetail="true"/>
-            <p:panel id="pnlDiagram" header="Grafo No Dirigido "  >
+            <p:panel id="pnlDiagram" header="Grafo No Dirigido Ciclo Tour "  >
                 <p:diagram value="#{controladorGrafo.model}" var="el" id="diagrama"  style="height:400px" styleClass="ui-widget-content" >
                     <p:ajax event="connect" listener="#{controladorGrafo.onConnect}" />
                     <p:ajax event="disconnect" listener="#{controladorGrafo.onDisconnect}" />
                     <p:ajax event="connectionChange" listener="#{controladorGrafo.onConnectionChange}" />
-                    <p:diagram value="#{controladorGrafo.mode2}" rendered="#{!controladorGrafo.activarPanel}" var="el" style="height:400px" styleClass="ui-widget-content" />
                 </p:diagram>
             </p:panel>
+            <p:panel header="Ruta Mas Corta" rendered="#{!controladorGrafo.activarPanel}">
+                <p:diagram value="#{controladorGrafo.mode2}" var="el" style="height:400px" styleClass="ui-widget-content" />
+            </p:panel>
         </h:form>
-        <p:accordionPanel>
 
-            <p:tab title="Ruta más corta">
+        <h:form>
+            <p:panel header="Acciones Ciclo Tour" id="pnlAccion">
+                <p:commandButton value="Limpiar Clico Tour" action="#{controladorGrafo.limpiarRutaCorta()}" update="@all" ajax="false"/>
+            </p:panel>
+        </h:form>
+
+        <p:accordionPanel>
+            <p:tab title="Ruta más corta Ciclo Tour">
                 <h:form id="frmRuta">
                     <p:panelGrid columns="4">
                         <p:outputLabel value="Inicio"/>
@@ -71,7 +79,7 @@
                     </p:dataTable>
                 </h:form>
             </p:tab>
-            <p:tab title="Crear Municipio">
+            <p:tab title="Crear Municipio Ciclo Tour">
                 <h:form id="frmMunicipio">
                     <center>
                         <p:panelGrid columns="2">
@@ -89,7 +97,7 @@
                 </h:form>
             </p:tab>
 
-            <p:tab title="Aristas">
+            <p:tab title="Aristas Ciclo Tour">
                 <h:form id="frmAristas">
                     <p:dataTable value="#{controladorGrafo.grafoND.aristas}" var="arista" editable="true">
                         <p:ajax event="rowEdit" listener="#{controladorGrafo.onRowEdit}"  />
@@ -124,9 +132,9 @@
                 </h:form>
             </p:tab>
 
-            <p:tab title="Niveles">
+            <p:tab title="Niveles Ciclo Tour">
                 <h:form >
-                    <p:commandButton value="Click" update="tblnivel" action="#{controladorGrafo.listados()}"/>
+                    <p:commandButton value="Actualizar Niveles" update="tblnivel" action="#{controladorGrafo.listados()}"/>
                     <p:dataTable id="tblnivel" value="#{controladorGrafo.verticesConSuNivel}" var="vertices">
                         <p:column>
                             <f:facet name="header">

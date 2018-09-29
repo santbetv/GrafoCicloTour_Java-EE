@@ -40,7 +40,7 @@ public class WsGrafoCicloTour {
 //
 //        return "Grafo Iniciado";
 //    }
-
+    //Inicio de Metodos de vertice
     @WebMethod(operationName = "listarVertices")
     public List<Vertice> listarVertices() {
         return controlGrafo.getGrafoND().getVertices();
@@ -66,6 +66,25 @@ public class WsGrafoCicloTour {
         return "Vertice Borrado";
     }
 
+    @WebMethod(operationName = "editarVertice")
+    public String editarVertice(@WebParam(name = "codigo") int codigo, @WebParam(name = "nombre") String nombre, @WebParam(name = "posx") int posx,
+            @WebParam(name = "posy") int posy) {
+        String validacion = "";
+        for (int i = 0; i < controlGrafo.getGrafoND().getVertices().size(); i++) {
+            if (controlGrafo.getGrafoND().getVertices().get(i).getCodigo() == codigo) {
+                controlGrafo.getGrafoND().getVertices().get(i).getDato().setNombre(nombre);
+                controlGrafo.getGrafoND().getVertices().get(i).getDato().setPosx(posx);
+                controlGrafo.getGrafoND().getVertices().get(i).getDato().setPosy(posy);
+                validacion = "Vertice editado";
+                break;
+            } else {
+                validacion = "Vertice NO se encuentra";
+            }
+        }
+        return validacion;
+    }
+
+    //Final de Metodos de vertice
     @WebMethod(operationName = "crearArista")
     public String crearArista(@WebParam(name = "origen") int origen, @WebParam(name = "destino") int destino, @WebParam(name = "peso") int peso) {
 

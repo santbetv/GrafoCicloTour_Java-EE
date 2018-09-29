@@ -56,7 +56,6 @@ public abstract class GrafoAbstract implements Serializable {
             }
         }
         aristas = tem;
-
     }
 
     public abstract void verificarArista(int origen, int destino) throws GrafoExcepcion;
@@ -71,6 +70,10 @@ public abstract class GrafoAbstract implements Serializable {
         return null;
     }
 
+    public void eliminarAristas() {
+        aristas.clear();
+    }
+    
     public Vertice obtenerVerticexNombre(String nombre) {
         for (Vertice vert : vertices) {
             if (vert.getDato().getNombre().compareTo(nombre) == 0) {
@@ -79,13 +82,4 @@ public abstract class GrafoAbstract implements Serializable {
         }
         return null;
     }
-
-    public List saludo() {
-        List<String> datos = new ArrayList<>();
-        for (Vertice vertice : vertices) {
-            datos.add("Nombre" + vertice.getDato().getNombre());
-        }
-        return datos;
-    }
-
 }

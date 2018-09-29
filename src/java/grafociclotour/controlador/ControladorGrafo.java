@@ -143,10 +143,10 @@ public class ControladorGrafo implements Serializable {
 //                new Municipio("T", 190000, 170000, 38, 20, 200)));
 //
 //        //llenado de aristas
-//        grafoND.getAristas().add(new Arista(1, 2, 3));
-//        grafoND.getAristas().add(new Arista(1, 3, 2));
-//        grafoND.getAristas().add(new Arista(2, 4, 1));
-//        grafoND.getAristas().add(new Arista(2, 5, 4));
+//        grafoND.getAristas().add(new Arista(1, 4, 3));
+//        grafoND.getAristas().add(new Arista(2, 1, 2));
+//        grafoND.getAristas().add(new Arista(2, 3, 1));
+//        grafoND.getAristas().add(new Arista(3, 4, 4));
 //        grafoND.getAristas().add(new Arista(3, 4, 3));
 //        grafoND.getAristas().add(new Arista(3, 7, 4));
 //        grafoND.getAristas().add(new Arista(4, 6, 2));
@@ -213,7 +213,7 @@ public class ControladorGrafo implements Serializable {
                     for (Element elDes : model.getElements()) {
                         if (elDes.getId().compareTo(String.valueOf(ar.getDestino())) == 0) {
                             ///
-                            if (rutaCorta != null) {
+                            if (!rutaCorta.isEmpty()) {
                                 for (Vertice rutaCorta1 : rutaCorta) {
                                     if (el.getId().compareTo(String.valueOf(rutaCorta1.getCodigo())) == 0) {
                                         for (Vertice rutaCorta2 : rutaCorta) {
@@ -228,6 +228,13 @@ public class ControladorGrafo implements Serializable {
                                         }
                                     }
                                 }
+                                if (verificarOriVer(Integer.parseInt(el.getId())) == false || verificarDesVer(Integer.parseInt(elDes.getId())) == false) {
+                                    Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
+                                    conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
+                                    connector.setPaintStyle("{strokeStyle:'green', lineWidth:3}");
+                                    conn.setConnector(connector);
+                                    model.connect(conn);
+                                }
                             } else {
                                 Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
                                 conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
@@ -236,14 +243,30 @@ public class ControladorGrafo implements Serializable {
                                 model.connect(conn);
                                 break;
                             }
-                            ///
-                            ///
                         }
                     }
                 }
             }
         }
         listados();
+    }
+
+    public boolean verificarOriVer(int origen) {
+        for (Vertice ver : rutaCorta) {
+            if ((ver.getCodigo() == origen)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean verificarDesVer(int destino) {
+        for (Vertice ver : rutaCorta) {
+            if ((ver.getCodigo() == destino)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void pintarRutaCorta() {
@@ -350,7 +373,7 @@ public class ControladorGrafo implements Serializable {
             pintarGrafo(grafoND);
             FacesContext.getCurrentInstance().addMessage(null, msg);
             PrimeFaces.current().ajax().update("frmGrafo");
-            PrimeFaces.current().ajax().update("frmMunicipio");
+//            PrimeFaces.current().ajax().update("frmMunicipio");
         } else {
             suspendEvent = false;
         }
@@ -368,7 +391,7 @@ public class ControladorGrafo implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         PrimeFaces.current().ajax().update("frmGrafo");
-        PrimeFaces.current().ajax().update("frmMunicipio");
+//        PrimeFaces.current().ajax().update("frmMunicipio");
         listados();
     }
 
@@ -450,7 +473,7 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
-    boolean activarPanel = true;
+    private boolean activarPanel = true;
 
     public boolean isActivarPanel() {
         return activarPanel;
@@ -458,6 +481,23 @@ public class ControladorGrafo implements Serializable {
 
     public void setActivarPanel(boolean activarPanel) {
         this.activarPanel = activarPanel;
+    }
+
+    public void limpiarRutaCorta() {
+        activarPanel = true;
+        if (grafoND.getAristas() != null) {
+            if (rutaCorta != null) {
+                rutaCorta.clear();
+            }
+            grafoND.eliminarAristas();
+            verticesConSuNivel.clear();
+            pintarGrafo(grafoND);
+            JsfUtil.addSuccessMessage("Limpieza realizada");
+        } else {
+            JsfUtil.addErrorMessage("Sin Aristas en CicloTour");
+        }
+        pintarGrafo(grafoND);
+        listados();
     }
 
     public void calcularRutaCorta() {

@@ -24,7 +24,7 @@ public class GrafoNoDirigido extends GrafoAbstract
             }
         }
     }
-
+    
     public boolean verificarAristaWs(int origen, int destino) {
         for (Arista ar : this.getAristas()) {
             if ((ar.getOrigen() == origen && ar.getDestino() == destino) || (ar.getDestino() == origen && ar.getOrigen() == destino)) {
@@ -33,7 +33,7 @@ public class GrafoNoDirigido extends GrafoAbstract
         }
         return false;
     }
-
+    
     public boolean verificarOrigenVerticeWs(int origen) {
         for (Vertice ver : this.getVertices()) {
             if ((ver.getCodigo() == origen)) {
