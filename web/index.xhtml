@@ -9,8 +9,10 @@
         <title>Grafo Ciclo Tour</title>
         <style type="text/css">
             .ui-diagram-element {
-                border:0.1em dotted #E5E4E2; 
+                border:0.1em dotted #E5E4E2;
+                border-radius: 30px;
                 background-color: #EFEEEC;
+                color: black;
                 width:8em; 
                 height:3em;
                 text-align: center;
@@ -18,7 +20,7 @@
             }
 
             .ui-diagram-element:hover {
-                background-color: #C7C6C4;
+                background-color: slategray;
             }
             .flow-label {
                 font-size: 24px;
@@ -27,25 +29,25 @@
             }
         </style>
     </h:head>
-    <h:body id="pnlInicio">
+    <h:body style="background-color: activecaption">
 
         <h:form id="frmGrafo">
             <p:growl id="grwErrores" showDetail="true"/>
-            <p:panel id="pnlDiagram" header="Grafo No Dirigido Ciclo Tour "  >
-                <p:diagram value="#{controladorGrafo.model}" var="el" id="diagrama"  style="height:400px" styleClass="ui-widget-content" >
+            <p:panel id="pnlDiagram" header="Grafo No Dirigido Ciclo Tour "  style="background-color: activecaption">
+                <p:diagram value="#{controladorGrafo.model}" var="el" id="diagrama"  style="height:400px; background-color: rgba(0,0,0,.0); margin: 0 auto; text-align:center; border-radius: 1%;" styleClass="ui-widget-content">
                     <p:ajax event="connect" listener="#{controladorGrafo.onConnect}" />
                     <p:ajax event="disconnect" listener="#{controladorGrafo.onDisconnect}" />
                     <p:ajax event="connectionChange" listener="#{controladorGrafo.onConnectionChange}" />
                 </p:diagram>
             </p:panel>
-            <p:panel header="Ruta Mas Corta" rendered="#{!controladorGrafo.activarPanel}">
-                <p:diagram value="#{controladorGrafo.mode2}" var="el" style="height:400px" styleClass="ui-widget-content" />
+            <p:panel header="Ruta Mas Corta" rendered="#{!controladorGrafo.activarPanel}" style="background-color: activecaption">
+                <p:diagram value="#{controladorGrafo.mode2}" var="el" style="height:400px; background-color: rgba(0,0,0,.0); margin: 0 auto; text-align:center; border-radius: 1%;" styleClass="ui-widget-content" />
             </p:panel>
         </h:form>
 
         <h:form>
             <p:panel header="Acciones Ciclo Tour" id="pnlAccion">
-                <p:commandButton value="Limpiar Clico Tour" action="#{controladorGrafo.limpiarRutaCorta()}" update="@all" ajax="false"/>
+                <p:commandButton value="Limpiar Ciclo Tour" action="#{controladorGrafo.limpiarRutaCorta()}" update="@all" ajax="false"/>
             </p:panel>
         </h:form>
 
@@ -55,19 +57,19 @@
                     <p:panelGrid columns="4">
                         <p:outputLabel value="Inicio"/>
                         <p:selectOneMenu value="#{controladorGrafo.codigoInicio}">
-                            <f:selectItems value="#{controladorGrafo.grafoND.vertices}"
-                                           var="vert" itemValue="#{vert.codigo}"
-                                           itemLabel="#{vert.dato.nombre}"/>
+                            <f:selectItem itemValue="#{vert.codigo}" itemLabel="Seleccione uno .." itemEscaped="true"/>
+                            <f:selectItems value="#{controladorGrafo.grafoND.vertices}" var="vert" itemValue="#{vert.codigo}" itemLabel="#{vert.dato.nombre}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Final"/>
                         <p:selectOneMenu value="#{controladorGrafo.codigoFinal}">
+                            <f:selectItem itemValue="#{vert.codigo}" itemLabel="Seleccione uno .." itemEscaped="true"/>
                             <f:selectItems value="#{controladorGrafo.grafoND.vertices}"
                                            var="vert" itemValue="#{vert.codigo}"
                                            itemLabel="#{vert.dato.nombre}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
 
-                    <p:commandButton value="Calcular Ruta" ajax="false" update="tblRuta" action="#{controladorGrafo.calcularRutaCorta()}"/>
+                    <p:commandButton value="Calcular Ruta" ajax="false" update="@all" action="#{controladorGrafo.calcularRutaCorta()}"/>
 
                     <p:dataTable id="tblRuta" value="#{controladorGrafo.rutaCorta}" var="ruta">
                         <p:column>
@@ -91,14 +93,14 @@
                             <p:inputText required="true" value="#{controladorGrafo.municipio.posy}"/>
                             <p:commandButton ajax="false" value="Adicionar" action="#{controladorGrafo.adicionarMunicipio()}" update="@all"/>
                             <p:commandButton immediate="true" ajax="false" value="Cancelar" action="#{controladorGrafo.limpiarMunicipio()}" update="@all"/>
-
                         </p:panelGrid>
                     </center>
                 </h:form>
             </p:tab>
 
             <p:tab title="Aristas Ciclo Tour">
-                <h:form id="frmAristas">
+                <h:form id="frmAristas" >
+                    <p:commandButton value="Actualizar Aristas" update="frmAristas"/>
                     <p:dataTable value="#{controladorGrafo.grafoND.aristas}" var="arista" editable="true">
                         <p:ajax event="rowEdit" listener="#{controladorGrafo.onRowEdit}"  />
                         <p:ajax event="rowEditCancel" listener="#{controladorGrafo.onRowCancel}"  />

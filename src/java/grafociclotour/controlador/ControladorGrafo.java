@@ -213,36 +213,36 @@ public class ControladorGrafo implements Serializable {
                     for (Element elDes : model.getElements()) {
                         if (elDes.getId().compareTo(String.valueOf(ar.getDestino())) == 0) {
                             ///
-                            if (!rutaCorta.isEmpty()) {
-                                for (Vertice rutaCorta1 : rutaCorta) {
-                                    if (el.getId().compareTo(String.valueOf(rutaCorta1.getCodigo())) == 0) {
-                                        for (Vertice rutaCorta2 : rutaCorta) {
-                                            if (elDes.getId().compareTo(String.valueOf(rutaCorta2.getCodigo())) == 0) {
-                                                Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
-                                                conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-                                                connector.setPaintStyle("{strokeStyle:'red', lineWidth:3}");
-                                                conn.setConnector(connector);
-                                                model.connect(conn);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                if (verificarOriVer(Integer.parseInt(el.getId())) == false || verificarDesVer(Integer.parseInt(elDes.getId())) == false) {
-                                    Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
-                                    conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-                                    connector.setPaintStyle("{strokeStyle:'green', lineWidth:3}");
-                                    conn.setConnector(connector);
-                                    model.connect(conn);
-                                }
-                            } else {
-                                Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
-                                conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-                                connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}");
-                                conn.setConnector(connector);
-                                model.connect(conn);
-                                break;
-                            }
+//                            if (!rutaCorta.isEmpty()) {
+//                                for (Vertice rutaCorta1 : rutaCorta) {
+//                                    if (el.getId().compareTo(String.valueOf(rutaCorta1.getCodigo())) == 0) {
+//                                        for (Vertice rutaCorta2 : rutaCorta) {
+//                                            if (elDes.getId().compareTo(String.valueOf(rutaCorta2.getCodigo())) == 0) {
+//                                                Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
+//                                                conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
+//                                                connector.setPaintStyle("{strokeStyle:'red', lineWidth:3}");
+//                                                conn.setConnector(connector);
+//                                                model.connect(conn);
+//                                                break;
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                                if (verificarOriVer(Integer.parseInt(el.getId())) == false || verificarDesVer(Integer.parseInt(elDes.getId())) == false) {
+//                                    Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
+//                                    conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
+//                                    connector.setPaintStyle("{strokeStyle:'green', lineWidth:3}");
+//                                    conn.setConnector(connector);
+//                                    model.connect(conn);
+//                                }
+//                            } else {
+                            Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
+                            conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
+                            connector.setPaintStyle("{strokeStyle:'green', lineWidth:3}");
+                            conn.setConnector(connector);
+                            model.connect(conn);
+                            break;
+//                            }
                         }
                     }
                 }
@@ -485,7 +485,7 @@ public class ControladorGrafo implements Serializable {
 
     public void limpiarRutaCorta() {
         activarPanel = true;
-        if (grafoND.getAristas() != null) {
+        if (!grafoND.getAristas().isEmpty()) {
             if (rutaCorta != null) {
                 rutaCorta.clear();
             }
@@ -501,18 +501,35 @@ public class ControladorGrafo implements Serializable {
     }
 
     public void calcularRutaCorta() {
-        activarPanel = false;
         if (codigoFinal != codigoInicio) {
-            Dijkstra dijstra = new Dijkstra(grafoND, grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
-            rutaCorta = dijstra.calcularRutaMasCorta();
-            pintarRutaCorta();
-            pintarGrafo(grafoND);
+            if (!grafoND.getAristas().isEmpty()) {
+                if (verificarNoConexo()) {
+                    Dijkstra dijstra = new Dijkstra(grafoND, grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
+                    rutaCorta = dijstra.calcularRutaMasCorta();
+                    pintarRutaCorta();
+                    pintarGrafo(grafoND);
+                    activarPanel = false;
+                } else {
+                    JsfUtil.addErrorMessage("Se identifica grafo NO conexo, Cambiar a No dirigido");
+                }
+            } else {
+                JsfUtil.addErrorMessage("Sin Aristas en CicloTour");
+            }
         } else {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Origen y Destino no pueden ser iguales", "Origen y Destino no pueden ser iguales");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             PrimeFaces.current().ajax().update("grwErrores");
         }
         listados();
+    }
+
+    public boolean verificarNoConexo() {
+        for (int i = 1; i <= grafoND.getVertices().size(); i++) {
+            if (contarAdya(i) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //nuevo
