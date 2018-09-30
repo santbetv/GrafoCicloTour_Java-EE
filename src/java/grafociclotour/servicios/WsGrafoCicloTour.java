@@ -145,7 +145,7 @@ public class WsGrafoCicloTour {
         }
         return "No existe Arista";
     }
-    
+
     @WebMethod(operationName = "listarAristas")
     public List<Arista> listarAristas() {
         return controlGrafo.getGrafoND().getAristas();
@@ -155,12 +155,17 @@ public class WsGrafoCicloTour {
     //Buscar por codigo
     @WebMethod(operationName = "obtenerRutaMasCortaXCodigo")
     public List<Vertice> obtenerRutaMasCortaXCodigo(@WebParam(name = "inicio") int inicio, @WebParam(name = "destino") int destino) {
-        List<Vertice> municipios = new ArrayList<>();
         if (destino != inicio) {
-            Dijkstra dijstra = new Dijkstra(controlGrafo.getGrafoND(), controlGrafo.getGrafoND().obtenerVerticexCodigo(inicio), controlGrafo.getGrafoND().obtenerVerticexCodigo(destino));
-            municipios = dijstra.calcularRutaMasCorta();
+            if (!controlGrafo.getGrafoND().getAristas().isEmpty()) {
+                if (controlGrafo.verificarNoConexo()) {
+                    Dijkstra dijstra = new Dijkstra(controlGrafo.getGrafoND(), controlGrafo.getGrafoND().obtenerVerticexCodigo(inicio), controlGrafo.getGrafoND().obtenerVerticexCodigo(destino));
+                    controlGrafo.setRutaCorta(dijstra.calcularRutaMasCorta());
+                    controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
+                    controlGrafo.pintarRutaCorta();
+                    controlGrafo.setActivarPanel(false);
+                }
+            }
         }
-        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
-        return municipios;
+        return controlGrafo.getRutaCorta();
     }
 }

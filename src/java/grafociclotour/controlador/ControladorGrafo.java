@@ -296,7 +296,17 @@ public class ControladorGrafo implements Serializable {
         return false;
     }
 
-    private void pintarRutaCorta() {
+    private List<Vertice> listaWs;
+
+    public List<Vertice> getListaWs() {
+        return listaWs;
+    }
+
+    public void setListaWs(List<Vertice> listaWs) {
+        this.listaWs = listaWs;
+    }
+
+    public void pintarRutaCorta() {
         //int x = 4;
         //int y = 4;
         mode2 = new DefaultDiagramModel();
