@@ -64,6 +64,8 @@ public class VerticeDijkstra implements Serializable {
         this.usado = usado;
     }
 
+    private VerticeDijkstra prueba = null;
+
     public void llenarAdyacenciasVertice(GrafoNoDirigido grafo, List<VerticeDijkstra> listadoVertices) {
         listadoAdyacencias = new ArrayList<>();
         for (Arista arista : grafo.getAristas()) {
@@ -75,9 +77,12 @@ public class VerticeDijkstra implements Serializable {
                 codigoDestino = arista.getOrigen();
             }
             if (codigoDestino != 0) {
-                VerticeDijkstra vert = obtenerVerticeDijkstraxCodigo(codigoDestino, listadoVertices);
+                VerticeDijkstra vert = obtenerVerticeDijkstraxCodigo(codigoDestino, listadoVertices);//verificar vacio
+//                if (vert == null) {
+//                    prueba = obtenerVerticeDijkstraxEstado(listadoVertices);//verificar vacio
+//                }
                 if (vert != null) {
-                    if (!vert.isUsado()) {
+                    if (!vert.isUsado()) { //Pregunta si ya ha sido usado
                         if (vert.getVerticeAntecesor() != null) {
                             //Ya se había gestionado una ruta anterior
                             int nuevoPeso = this.getPesoAcumulado() + arista.getPeso();
@@ -111,14 +116,27 @@ public class VerticeDijkstra implements Serializable {
         return null;
     }
 
-    public VerticeDijkstra obtenerAdyacenciaMenorPeso() {
+    public VerticeDijkstra obtenerVerticeDijkstraxEstado(List<VerticeDijkstra> listadoVertices) {
+        for (VerticeDijkstra vert : listadoVertices) {
+            if (vert.usado == false) {
+                return vert;
+            }
+        }
+        return null;
+    }
+
+    public VerticeDijkstra obtenerAdyacenciaMenorPeso(List<VerticeDijkstra> listadoVertices) {
         int menor = Integer.MAX_VALUE;
         VerticeDijkstra vertMenor = null;
-        for (VerticeDijkstra vert : listadoAdyacencias) {
-            if (!vert.isUsado() && vert.getPesoAcumulado() < menor) {
-                vertMenor = vert;
-                menor = vert.getPesoAcumulado();
+        if (!listadoAdyacencias.isEmpty()) {
+            for (VerticeDijkstra vert : listadoAdyacencias) { //Verificar en recorrido el peso acumulado
+                if (!vert.isUsado() && vert.getPesoAcumulado() < menor) {
+                    vertMenor = vert;
+                    menor = vert.getPesoAcumulado();
+                }
             }
+        } else {
+            vertMenor = prueba = obtenerVerticeDijkstraxEstado(listadoVertices);//verificar vacio
         }
         return vertMenor;
     }

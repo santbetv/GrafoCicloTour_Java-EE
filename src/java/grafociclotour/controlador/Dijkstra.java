@@ -46,8 +46,8 @@ public class Dijkstra implements Serializable {
         while (contVertusados < grafo.getVertices().size()) {
             //se llenan las adyacencias del antecesor que no estén marcadas
             antecesor.llenarAdyacenciasVertice(grafo, listadoVerticesUsados);
-            VerticeDijkstra menor = antecesor.obtenerAdyacenciaMenorPeso();
-            menor.setUsado(true);
+            VerticeDijkstra menor = antecesor.obtenerAdyacenciaMenorPeso(listadoVerticesUsados);
+            menor.setUsado(true);//Inicio de error
             listadoVerticesUsados.addAll(this.obtenerAdyacenciasNuevas(antecesor.getListadoAdyacencias(), listadoVerticesUsados));
             antecesor = menor;
             //se busca la menor adyacencia y se inicia de nuevo el proceso

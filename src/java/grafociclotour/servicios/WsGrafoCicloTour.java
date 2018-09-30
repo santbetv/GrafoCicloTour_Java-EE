@@ -85,9 +85,9 @@ public class WsGrafoCicloTour {
     }
 
     //Final de Metodos de vertice
+    //Inicio de metodos de aristas
     @WebMethod(operationName = "crearArista")
     public String crearArista(@WebParam(name = "origen") int origen, @WebParam(name = "destino") int destino, @WebParam(name = "peso") int peso) {
-
         if (controlGrafo.getGrafoND().verificarOrigenVerticeWs(origen)) {
             if (controlGrafo.getGrafoND().verificarDestinoVerticeWs(destino)) {
                 if (controlGrafo.getGrafoND().verificarAristaWs(origen, destino)) {
@@ -105,6 +105,53 @@ public class WsGrafoCicloTour {
         return "Arista Creada";
     }
 
+    @WebMethod(operationName = "eliminarArista")
+    public String eliminarArista(@WebParam(name = "origen") int origen, @WebParam(name = "destino") int destino) {
+        if (controlGrafo.getGrafoND().verificarOrigenVerticeWs(origen)) {
+            if (controlGrafo.getGrafoND().verificarDestinoVerticeWs(destino)) {
+                for (Arista ar : controlGrafo.getGrafoND().getAristas()) {
+                    if ((ar.getOrigen() == origen && ar.getDestino() == destino) || (ar.getDestino() == origen && ar.getOrigen() == destino)) {
+                        controlGrafo.getGrafoND().getAristas().remove(ar);
+                        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
+                        return "Arista eliminada";
+                    }
+                }
+            } else {
+                return "Destino NO existe";
+            }
+        } else {
+            return "Origen NO existe";
+        }
+        return "No existe Arista";
+    }
+
+    @WebMethod(operationName = "editarPesoArista")
+    public String editarPesoArista(@WebParam(name = "origen") int origen, @WebParam(name = "destino") int destino, @WebParam(name = "pesoNuevo") int pesoNuevo) {
+        if (controlGrafo.getGrafoND().verificarOrigenVerticeWs(origen)) {
+            if (controlGrafo.getGrafoND().verificarDestinoVerticeWs(destino)) {
+                for (int i = 0; i < controlGrafo.getGrafoND().getAristas().size(); i++) {
+                    if ((controlGrafo.getGrafoND().getAristas().get(i).getOrigen() == origen && controlGrafo.getGrafoND().getAristas().get(i).getDestino() == destino)
+                            || (controlGrafo.getGrafoND().getAristas().get(i).getDestino() == origen && controlGrafo.getGrafoND().getAristas().get(i).getOrigen() == destino)) {
+                        controlGrafo.getGrafoND().getAristas().get(i).setPeso(pesoNuevo);
+                        controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
+                        return "Peso editado";
+                    }
+                }
+            } else {
+                return "Destino NO existe";
+            }
+        } else {
+            return "Origen NO existe";
+        }
+        return "No existe Arista";
+    }
+    
+    @WebMethod(operationName = "listarAristas")
+    public List<Arista> listarAristas() {
+        return controlGrafo.getGrafoND().getAristas();
+    }
+
+    //Final de metodos de aristas
     //Buscar por codigo
     @WebMethod(operationName = "obtenerRutaMasCortaXCodigo")
     public List<Vertice> obtenerRutaMasCortaXCodigo(@WebParam(name = "inicio") int inicio, @WebParam(name = "destino") int destino) {

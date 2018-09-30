@@ -116,14 +116,32 @@ public class ControladorGrafo implements Serializable {
     public void inicializar() {
         grafoND = new GrafoNoDirigido();
 
+//        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+//                new Municipio("Manizales", 4, 4)));
+//        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+//                new Municipio("Neira", 10, 10)));
+//        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+//                new Municipio("Chinchiná", 20, 10)));
+//        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+//                new Municipio("Palestina", 30, 4)));
+//        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+//                new Municipio("Supia", 30, 12)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Manizales", 4, 4)));
+                new Municipio("B", 10, 12)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Neira", 10, 10)));
+                new Municipio("C", 20, 12)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Chinchiná", 20, 10)));
+                new Municipio("A", 4, 4)));
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("Palestina", 30, 4)));
+                new Municipio("J", 70, 4)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("D", 30, 4)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("E", 40, 12)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("G", 60, 12)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("F", 50, 4)));
 
 //        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
 //                new Municipio("O", 500000, 140000, 4, 6, 120)));
@@ -143,10 +161,19 @@ public class ControladorGrafo implements Serializable {
 //                new Municipio("T", 190000, 170000, 38, 20, 200)));
 //
 //        //llenado de aristas
-//        grafoND.getAristas().add(new Arista(1, 4, 3));
-//        grafoND.getAristas().add(new Arista(2, 1, 2));
-//        grafoND.getAristas().add(new Arista(2, 3, 1));
-//        grafoND.getAristas().add(new Arista(3, 4, 4));
+        grafoND.getAristas().add(new Arista(1, 3, 4));
+        grafoND.getAristas().add(new Arista(1, 2, 1));
+        grafoND.getAristas().add(new Arista(1, 5, 1));
+        grafoND.getAristas().add(new Arista(1, 6, 4));
+        grafoND.getAristas().add(new Arista(2, 3, 3));
+        grafoND.getAristas().add(new Arista(3, 5, 2));
+        grafoND.getAristas().add(new Arista(3, 6, 4));
+        grafoND.getAristas().add(new Arista(3, 7, 2));
+        grafoND.getAristas().add(new Arista(4, 2, 1));
+        grafoND.getAristas().add(new Arista(4, 3, 1));
+        grafoND.getAristas().add(new Arista(4, 6, 2));
+        grafoND.getAristas().add(new Arista(4, 7, 2));
+        grafoND.getAristas().add(new Arista(7, 8, 1));
 //        grafoND.getAristas().add(new Arista(3, 4, 3));
 //        grafoND.getAristas().add(new Arista(3, 7, 4));
 //        grafoND.getAristas().add(new Arista(4, 6, 2));
@@ -155,7 +182,7 @@ public class ControladorGrafo implements Serializable {
 //        grafoND.getAristas().add(new Arista(6, 7, 3));
 //        grafoND.getAristas().add(new Arista(6, 8, 4));
 //        grafoND.getAristas().add(new Arista(7, 8, 5));
-//
+
         pintarGrafo(grafoND);
 //        listados();
         //Dijkstra dijstra = new Dijkstra(grafoND, grafoND.getVertices().get(0), grafoND.getVertices().get(6));
@@ -238,7 +265,7 @@ public class ControladorGrafo implements Serializable {
 //                            } else {
                             Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
                             conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-                            connector.setPaintStyle("{strokeStyle:'green', lineWidth:3}");
+                            connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}");
                             conn.setConnector(connector);
                             model.connect(conn);
                             break;
@@ -332,7 +359,6 @@ public class ControladorGrafo implements Serializable {
     public void limpiarMunicipio() {
         listados();
         municipio = new Municipio();
-
     }
 
     private EndPoint createRectangleEndPoint(EndPointAnchor anchor) {
@@ -548,11 +574,22 @@ public class ControladorGrafo implements Serializable {
     }
 
     private List listadosX() {
+        int cont = 0;
         List<String> nuevas = new ArrayList<>();
         for (int i = 1; i <= grafoND.getVertices().size(); i++) {
-            nuevas.add("Vertice: " + i + "   <------------>  " + "Nivel: " + contarAdya(i));
+            nuevas.add("Vertice: " + consultarVerticeXCodigo(cont + 1) + "   <------------>  " + "Nivel: " + contarAdya(i));
+            cont++;
         }
         return nuevas;
+    }
+
+    public String consultarVerticeXCodigo(int codigo) {
+        for (Vertice vertice : grafoND.getVertices()) {
+            if (vertice.getCodigo() == codigo) {
+                return vertice.getDato().getNombre();
+            }
+        }
+        return "No se encuentra vertice";
     }
 
     private int contarAdya(int indicador) {
@@ -567,4 +604,92 @@ public class ControladorGrafo implements Serializable {
         }
         return con;
     }
+
+    /////////////////////
+    private int eliminarVer = 0;
+
+    public int getEliminarVer() {
+        return eliminarVer;
+    }
+
+    public void setEliminarVer(int eliminarVer) {
+        this.eliminarVer = eliminarVer;
+    }
+
+    public void borrarVerice() {
+        borrarVertice(eliminarVer);
+    }
+
+    private void borrarVertice(int codigo) {
+        for (int i = 0; i < grafoND.getVertices().size(); i++) {
+            if (grafoND.getVertices().get(i).getCodigo() == codigo) {
+                grafoND.getVertices().remove(i);
+            }
+        }
+        pintarGrafo(grafoND);
+        JsfUtil.addSuccessMessage("Verice Borrado");
+    }
+
+    //////////////////////////////
+    private int codigoEditado = 0;
+    private String nombreEditado = "";
+    private int posxEditado = 0;
+    private int posyEditado = 0;
+
+    public int getCodigoEditado() {
+        return codigoEditado;
+    }
+
+    public void setCodigoEditado(int codigoEditado) {
+        this.codigoEditado = codigoEditado;
+    }
+
+    public String getNombreEditado() {
+        return nombreEditado;
+    }
+
+    public void setNombreEditado(String nombreEditado) {
+        this.nombreEditado = nombreEditado;
+    }
+
+    public int getPosxEditado() {
+        return posxEditado;
+    }
+
+    public void setPosxEditado(int posxEditado) {
+        this.posxEditado = posxEditado;
+    }
+
+    public int getPosyEditado() {
+        return posyEditado;
+    }
+
+    public void setPosyEditado(int posyEditado) {
+        this.posyEditado = posyEditado;
+    }
+
+    public void editarVertice() {
+        editarVertice(codigoEditado, nombreEditado, posxEditado, posyEditado);
+    }
+
+    private void editarVertice(int codigo, String nombre, int posx, int posy) {
+        boolean validador = false;
+        for (int i = 0; i < grafoND.getVertices().size(); i++) {
+            if (grafoND.getVertices().get(i).getCodigo() == codigo) {
+                grafoND.getVertices().get(i).getDato().setNombre(nombre);
+                grafoND.getVertices().get(i).getDato().setPosx(posx);
+                grafoND.getVertices().get(i).getDato().setPosy(posy);
+                validador = true;
+                break;
+            }
+        }
+        if (validador) {
+            JsfUtil.addSuccessMessage("Vertice editado");
+        } else {
+            JsfUtil.addSuccessMessage("Vertice NO se encuentra");
+        }
+        pintarGrafo(grafoND);
+    }
+
+    ///////////////////////////////////////
 }
