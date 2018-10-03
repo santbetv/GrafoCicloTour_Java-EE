@@ -33,7 +33,7 @@ public class GrafoNoDirigido extends GrafoAbstract
         }
         return false;
     }
-    
+
     public boolean verificarOrigenVerticeWs(int origen) {
         for (Vertice ver : this.getVertices()) {
             if ((ver.getCodigo() == origen)) {

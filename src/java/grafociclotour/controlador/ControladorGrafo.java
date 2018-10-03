@@ -126,23 +126,22 @@ public class ControladorGrafo implements Serializable {
 //                new Municipio("Palestina", 30, 4)));
 //        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
 //                new Municipio("Supia", 30, 12)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("B", 10, 12)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("C", 20, 12)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("A", 4, 4)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("J", 70, 4)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("D", 30, 4)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("E", 40, 12)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("G", 60, 12)));
-        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
-                new Municipio("F", 50, 4)));
-
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("B", 10, 12)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("C", 20, 12)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("A", 4, 4)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("J", 70, 4)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("D", 30, 4)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("E", 40, 12)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("G", 60, 12)));
+////////        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+////////                new Municipio("F", 50, 4)));
 //        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
 //                new Municipio("O", 500000, 140000, 4, 6, 120)));
 //        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
@@ -161,19 +160,72 @@ public class ControladorGrafo implements Serializable {
 //                new Municipio("T", 190000, 170000, 38, 20, 200)));
 //
 //        //llenado de aristas
-        grafoND.getAristas().add(new Arista(1, 3, 4));
-        grafoND.getAristas().add(new Arista(1, 2, 1));
-        grafoND.getAristas().add(new Arista(1, 5, 1));
-        grafoND.getAristas().add(new Arista(1, 6, 4));
-        grafoND.getAristas().add(new Arista(2, 3, 3));
-        grafoND.getAristas().add(new Arista(3, 5, 2));
-        grafoND.getAristas().add(new Arista(3, 6, 4));
-        grafoND.getAristas().add(new Arista(3, 7, 2));
-        grafoND.getAristas().add(new Arista(4, 2, 1));
-        grafoND.getAristas().add(new Arista(4, 3, 1));
-        grafoND.getAristas().add(new Arista(4, 6, 2));
-        grafoND.getAristas().add(new Arista(4, 7, 2));
-        grafoND.getAristas().add(new Arista(7, 8, 1));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("A", 4, 6)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("B", 20, 2)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("C", 30, 2)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("D", 22, 8)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("E", 50, 5)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("F", 42, 13)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("G", 16, 16)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("H", 38, 20)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("I", 35, 30)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("J", 10, 50)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("K", 25, 55)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("M", 40, 50)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("N", 4, 30)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("O", 9, 24)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("P", 18, 30)));
+
+        //llenado de aristas
+        grafoND.getAristas().add(new Arista(1, 2, 6));
+        grafoND.getAristas().add(new Arista(1, 4, 5));
+        grafoND.getAristas().add(new Arista(1, 7, 8));
+        grafoND.getAristas().add(new Arista(2, 4, 1));
+        grafoND.getAristas().add(new Arista(2, 3, 7));
+        grafoND.getAristas().add(new Arista(3, 4, 4));
+        grafoND.getAristas().add(new Arista(3, 6, 2));
+        grafoND.getAristas().add(new Arista(3, 5, 11));
+        grafoND.getAristas().add(new Arista(4, 5, 6));
+        grafoND.getAristas().add(new Arista(4, 8, 3));
+        grafoND.getAristas().add(new Arista(5, 7, 10));
+        grafoND.getAristas().add(new Arista(5, 6, 2));
+        grafoND.getAristas().add(new Arista(6, 8, 4));
+        grafoND.getAristas().add(new Arista(7, 8, 2));
+        grafoND.getAristas().add(new Arista(10, 9, 1));
+        grafoND.getAristas().add(new Arista(11, 10, 3));
+        grafoND.getAristas().add(new Arista(12, 9, 9));
+        grafoND.getAristas().add(new Arista(11, 12, 8));
+        grafoND.getAristas().add(new Arista(13, 14, 3));
+        grafoND.getAristas().add(new Arista(15, 13, 2));
+
+//////////        grafoND.getAristas().add(new Arista(1, 3, 4));
+//////////        grafoND.getAristas().add(new Arista(1, 2, 1));
+//////////        grafoND.getAristas().add(new Arista(1, 5, 1));
+//////////        grafoND.getAristas().add(new Arista(1, 6, 4));
+//////////        grafoND.getAristas().add(new Arista(2, 3, 3));
+//////////        grafoND.getAristas().add(new Arista(3, 5, 2));
+//////////        grafoND.getAristas().add(new Arista(3, 6, 4));
+//////////        grafoND.getAristas().add(new Arista(3, 7, 2));
+//////////        grafoND.getAristas().add(new Arista(4, 2, 1));
+//////////        grafoND.getAristas().add(new Arista(4, 3, 1));
+//////////        grafoND.getAristas().add(new Arista(4, 6, 2));
+//////////        grafoND.getAristas().add(new Arista(4, 7, 2));
+//////////        grafoND.getAristas().add(new Arista(7, 8, 1));
 //        grafoND.getAristas().add(new Arista(3, 4, 3));
 //        grafoND.getAristas().add(new Arista(3, 7, 4));
 //        grafoND.getAristas().add(new Arista(4, 6, 2));
@@ -182,11 +234,68 @@ public class ControladorGrafo implements Serializable {
 //        grafoND.getAristas().add(new Arista(6, 7, 3));
 //        grafoND.getAristas().add(new Arista(6, 8, 4));
 //        grafoND.getAristas().add(new Arista(7, 8, 5));
-
         pintarGrafo(grafoND);
 //        listados();
         //Dijkstra dijstra = new Dijkstra(grafoND, grafoND.getVertices().get(0), grafoND.getVertices().get(6));
         //dijstra.calcularRutaMasCorta();
+    }
+
+    public void adicionPorDefecto() {
+
+        grafoND = new GrafoNoDirigido();
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("A", 4, 6)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("B", 20, 2)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("C", 30, 2)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("D", 22, 8)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("E", 50, 5)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("F", 42, 13)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("G", 16, 16)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("H", 38, 20)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("I", 35, 30)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("J", 10, 50)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("K", 25, 55)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("M", 40, 50)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("N", 4, 30)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("O", 9, 24)));
+        grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
+                new Municipio("P", 18, 30)));
+
+        //llenado de aristas
+        grafoND.getAristas().add(new Arista(1, 2, 6));
+        grafoND.getAristas().add(new Arista(1, 4, 5));
+        grafoND.getAristas().add(new Arista(1, 7, 8));
+        grafoND.getAristas().add(new Arista(2, 4, 1));
+        grafoND.getAristas().add(new Arista(2, 3, 7));
+        grafoND.getAristas().add(new Arista(3, 4, 4));
+        grafoND.getAristas().add(new Arista(3, 6, 2));
+        grafoND.getAristas().add(new Arista(3, 5, 11));
+        grafoND.getAristas().add(new Arista(4, 5, 6));
+        grafoND.getAristas().add(new Arista(4, 8, 3));
+        grafoND.getAristas().add(new Arista(5, 7, 10));
+        grafoND.getAristas().add(new Arista(5, 6, 2));
+        grafoND.getAristas().add(new Arista(6, 8, 4));
+        grafoND.getAristas().add(new Arista(7, 8, 2));
+        grafoND.getAristas().add(new Arista(10, 9, 1));
+        grafoND.getAristas().add(new Arista(11, 10, 3));
+        grafoND.getAristas().add(new Arista(12, 9, 9));
+        grafoND.getAristas().add(new Arista(11, 12, 8));
+        grafoND.getAristas().add(new Arista(13, 14, 3));
+        grafoND.getAristas().add(new Arista(15, 13, 2));
+        pintarGrafo(grafoND);
     }
 
     public void pintarGrafo(GrafoAbstract grafo) {
@@ -541,10 +650,15 @@ public class ControladorGrafo implements Serializable {
             if (!grafoND.getAristas().isEmpty()) {
                 if (verificarNoConexo()) {
                     Dijkstra dijstra = new Dijkstra(grafoND, grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
-                    rutaCorta = dijstra.calcularRutaMasCorta();
-                    pintarRutaCorta();
-                    pintarGrafo(grafoND);
-                    activarPanel = false;
+                    List<Vertice> ruta = dijstra.calcularRutaMasCorta();
+                    if (dijstra.isValidadorRut()) {
+                        rutaCorta = ruta;
+                        pintarRutaCorta();
+                        pintarGrafo(grafoND);
+                        activarPanel = false;
+                    } else {
+                        JsfUtil.addErrorMessage("Sin ruta");
+                    }
                 } else {
                     JsfUtil.addErrorMessage("Se identifica grafo NO conexo, Cambiar a No dirigido");
                 }
@@ -556,6 +670,7 @@ public class ControladorGrafo implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             PrimeFaces.current().ajax().update("grwErrores");
         }
+
         listados();
     }
 

@@ -31,6 +31,16 @@ public class Dijkstra implements Serializable {
         this.nodoFinal = nodoFinal;
     }
 
+    private boolean validadorRut;
+
+    public boolean isValidadorRut() {
+        return validadorRut;
+    }
+
+    public void setValidadorRut(boolean validadorRut) {
+        this.validadorRut = validadorRut;
+    }
+
     public List<Vertice> calcularRutaMasCorta() {
         List<Vertice> ruta = new ArrayList<>();
         VerticeDijkstra inicio = new VerticeDijkstra();
@@ -47,23 +57,34 @@ public class Dijkstra implements Serializable {
             //se llenan las adyacencias del antecesor que no estén marcadas
             antecesor.llenarAdyacenciasVertice(grafo, listadoVerticesUsados);
             VerticeDijkstra menor = antecesor.obtenerAdyacenciaMenorPeso(listadoVerticesUsados);
-            menor.setUsado(true);//Inicio de error
-            listadoVerticesUsados.addAll(this.obtenerAdyacenciasNuevas(antecesor.getListadoAdyacencias(), listadoVerticesUsados));
-            antecesor = menor;
-            //se busca la menor adyacencia y se inicia de nuevo el proceso
-            contVertusados = contarVerticesUsados(listadoVerticesUsados);
+            if (menor != null) {
+                menor.setUsado(true);//Inicio de error
+                listadoVerticesUsados.addAll(this.obtenerAdyacenciasNuevas(antecesor.getListadoAdyacencias(), listadoVerticesUsados));
+                antecesor = menor;
+                //se busca la menor adyacencia y se inicia de nuevo el proceso
+                contVertusados = contarVerticesUsados(listadoVerticesUsados);
+            } else {
+                contVertusados += (-1 * (contVertusados - grafo.getVertices().size()));
+            }
+
         }
         //Ya deben estar los antecesores listos y enlazados, se deben recorrer de atras hacia adelante 
         //hasta llenar la ruta empezando en el nodo final
         VerticeDijkstra destino = null;
-        ruta.add(nodoFinal);
-        int codigoAnt = nodoFinal.getCodigo();
-        do {
-            destino = obtenerVerticeAntecesorxCodigo(codigoAnt, listadoVerticesUsados);
-            codigoAnt = destino.getVerticeAntecesor().getCodigo();
-            ruta.add(destino.getVerticeAntecesor());
-        } while (codigoAnt != nodoInicio.getCodigo());
-
+        int codigoFianalAnt = nodoFinal.getCodigo();
+        VerticeDijkstra verificarFinal = obtenerVerticeAntecesorxCodigo(codigoFianalAnt, listadoVerticesUsados);;
+        if (verificarFinal != null) {
+            ruta.add(nodoFinal);
+            int codigoAnt = nodoFinal.getCodigo();
+            do {
+                destino = obtenerVerticeAntecesorxCodigo(codigoAnt, listadoVerticesUsados);
+                codigoAnt = destino.getVerticeAntecesor().getCodigo();
+                ruta.add(destino.getVerticeAntecesor());
+            } while (codigoAnt != nodoInicio.getCodigo());
+            validadorRut = true;
+        } else {
+            validadorRut = false;
+        }
         return ruta;
     }
 

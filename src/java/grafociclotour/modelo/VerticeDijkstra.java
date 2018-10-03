@@ -136,7 +136,15 @@ public class VerticeDijkstra implements Serializable {
                 }
             }
         } else {
+
             vertMenor = prueba = obtenerVerticeDijkstraxEstado(listadoVertices);//verificar vacio
+//            prueba = obtenerVerticeDijkstraxEstado(listadoVertices);//verificar vacio
+//            if (prueba != null) {
+//                vertMenor = prueba = obtenerVerticeDijkstraxEstado(listadoVertices);//verificar vacio
+//            } else {
+//                valorTotal(listadoVertices.size());
+//            }
+
         }
         return vertMenor;
     }

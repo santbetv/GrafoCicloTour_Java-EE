@@ -50,6 +50,7 @@
         <h:form>
             <p:panel header="Acciones Ciclo Tour" id="pnlAccion">
                 <p:commandButton value="Limpiar Ciclo Tour" action="#{controladorGrafo.limpiarRutaCorta()}" update="@all" ajax="false"/>
+                <p:commandButton value="Adicionar Dijkstra Complejo" action="#{controladorGrafo.adicionPorDefecto()}" update="@all" ajax="false"/>
             </p:panel>
         </h:form>
 
