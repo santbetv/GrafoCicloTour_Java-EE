@@ -13,9 +13,9 @@ import java.io.Serializable;
  */
 public class Municipio implements Serializable {
 
-    private String nombre;
-    private int posx;
-    private int posy;
+    private String nombre = "";
+    private int posx = 0;
+    private int posy = 0;
 
     public Municipio() {
     }

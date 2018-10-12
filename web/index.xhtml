@@ -34,16 +34,14 @@
         <h:form id="frmGrafo">
             <p:growl id="grwErrores" showDetail="true"/>
             <p:panel id="pnlDiagram" header="Grafo No Dirigido Ciclo Tour "  style="background-color: darkcyan">
-                    <p:diagram value="#{controladorGrafo.model}" var="el" id="diagrama"  style="height:400px; background-color: rgba(0,0,0,.0); margin: 0 auto; text-align:center; border-radius: 1%;" styleClass="ui-widget-content">
-                        <p:ajax event="connect" listener="#{controladorGrafo.onConnect}" />
-                        <p:ajax event="disconnect" listener="#{controladorGrafo.onDisconnect}" />
-                        <p:ajax event="connectionChange" listener="#{controladorGrafo.onConnectionChange}" />
-                    </p:diagram>
+                <p:diagram value="#{controladorGrafo.model}" var="el" id="diagrama"  style="height:400px; background-color: rgba(0,0,0,.0); margin: 0 auto; text-align:center; border-radius: 1%;" styleClass="ui-widget-content">
+                    <p:ajax event="connect" listener="#{controladorGrafo.onConnect}" />
+                    <p:ajax event="disconnect" listener="#{controladorGrafo.onDisconnect}" />
+                    <p:ajax event="connectionChange" listener="#{controladorGrafo.onConnectionChange}" />
+                </p:diagram>
             </p:panel>
             <p:panel header="Ruta Mas Corta" rendered="#{!controladorGrafo.activarPanel}" style="background-color: darkcyan">
-               
-                    <p:diagram value="#{controladorGrafo.mode2}" var="el" style="height:400px; background-color: rgba(0,0,0,.0); margin: 0 auto; text-align:center; border-radius: 1%;" styleClass="ui-widget-content" />
-                
+                <p:diagram value="#{controladorGrafo.mode2}" var="el" style="height:400px; background-color: rgba(0,0,0,.0); margin: 0 auto; text-align:center; border-radius: 1%;" styleClass="ui-widget-content" />
             </p:panel>
         </h:form>
 
@@ -51,6 +49,7 @@
             <p:panel header="Acciones Ciclo Tour" id="pnlAccion">
                 <p:commandButton value="Limpiar Ciclo Tour" action="#{controladorGrafo.limpiarRutaCorta()}" update="@all" ajax="false"/>
                 <p:commandButton value="Adicionar Dijkstra Complejo" action="#{controladorGrafo.adicionPorDefecto()}" update="@all" ajax="false"/>
+                <p:commandButton value="Adicionar Dijkstra Parcial" action="#{controladorGrafo.adicionarGrafoParcial()}" update="@all" ajax="false"/>
             </p:panel>
         </h:form>
 
@@ -84,8 +83,38 @@
                     </p:dataTable>
                 </h:form>
             </p:tab>
-            <p:tab title="Crear Vertice Municipio Ciclo Tour">
-                <h:form id="frmMunicipio">
+            <p:tab title="Ruta más corta mejorada Parcial">
+                <h:form id="frmRutalarga">
+                    <p:panelGrid columns="4">
+                        <p:outputLabel value="Inicio"/>
+                        <p:selectOneMenu value="#{controladorGrafo.codigoInicio}">
+                            <f:selectItem itemValue="#{vert.codigo}" itemLabel="Seleccione uno .." itemEscaped="true"/>
+                            <f:selectItems value="#{controladorGrafo.grafoND.vertices}" var="vert" itemValue="#{vert.codigo}" itemLabel="#{vert.dato.nombre}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Final"/>
+                        <p:selectOneMenu value="#{controladorGrafo.codigoFinal}">
+                            <f:selectItem itemValue="#{vert.codigo}" itemLabel="Seleccione uno .." itemEscaped="true"/>
+                            <f:selectItems value="#{controladorGrafo.grafoND.vertices}"
+                                           var="vert" itemValue="#{vert.codigo}"
+                                           itemLabel="#{vert.dato.nombre}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+
+                    <p:commandButton value="Calcular Ruta" ajax="false" update="@all" action="#{controladorGrafo.calcularRutas()}"/>
+
+                    <p:dataTable id="tblRuta" value="#{controladorGrafo.rutaCorta}" var="ruta">
+                        <p:column>
+                            <f:facet name="header">
+                                <p:outputLabel value="Origen"/>
+                            </f:facet>
+                            <p:outputLabel value="#{ruta.dato.nombre}"/>
+                        </p:column>                        
+                    </p:dataTable>
+                </h:form>
+            </p:tab>
+
+            <p:tab title="Crear Vertice Municipio Ciclo Tour" >
+                <h:form id="yyy">
                     <center>
                         <p:panelGrid columns="2">
                             <p:outputLabel value="Nombre:"/>
@@ -94,8 +123,8 @@
                             <p:inputText required="true" value="#{controladorGrafo.municipio.posx}"/>
                             <p:outputLabel value="Pos y:"/>
                             <p:inputText required="true" value="#{controladorGrafo.municipio.posy}"/>
-                            <p:commandButton ajax="false" value="Adicionar" action="#{controladorGrafo.adicionarMunicipio()}" update="@all"/>
-                            <p:commandButton immediate="true" ajax="false" value="Cancelar" action="#{controladorGrafo.limpiarMunicipio()}" update="@all"/>
+                            <p:commandButton value="Adicionar" action="#{controladorGrafo.adicionarMunicipio()}" update="yyy,frmGrafo"/>
+                            <p:commandButton value="Cancelar" actionListener="#{controladorGrafo.limpiarMunicipio()}" update="yyy,frmGrafo"/>
                         </p:panelGrid>
                     </center>
                 </h:form>
