@@ -8,11 +8,15 @@ package grafociclotour.modelo;
 import java.io.Serializable;
 
 /**
- *
+ * @author Carlos Loaiza
  * @author Santiago Betancur
+ * @version V.8
  */
 public class Municipio implements Serializable {
 
+    /**
+     * Atributos principales que toman el nombre, la posicion en posx y posy
+     */
     private String nombre = "";
     private int posx = 0;
     private int posy = 0;

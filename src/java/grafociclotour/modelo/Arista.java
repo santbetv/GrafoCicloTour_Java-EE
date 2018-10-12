@@ -8,10 +8,15 @@ package grafociclotour.modelo;
 import java.io.Serializable;
 
 /**
- *
+ * @author Carlos loaiza
  * @author Santiago Betancur
+ * @version V.8
  */
-public class Arista implements Serializable{
+public class Arista implements Serializable {
+
+    /**
+     * Atributes que tomas origen destino y peso
+     */
     private int origen;
     private int destino;
     private int peso;
@@ -54,7 +59,4 @@ public class Arista implements Serializable{
         return "Origen: " + origen + " Destino: " + destino + " Peso: " + peso;
     }
 
-   
-     
-    
 }

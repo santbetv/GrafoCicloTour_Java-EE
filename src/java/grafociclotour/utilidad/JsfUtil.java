@@ -7,6 +7,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 
+/**
+ * Clase que permite mostrar mensajes de la vista. Clase que permite en Base de
+ * datos crear un crud.
+ *
+ */
 public class JsfUtil {
 
     public static SelectItem[] getSelectItems(List<?> entities, boolean selectOne) {

@@ -6,10 +6,11 @@
 package grafociclotour.excepciones;
 
 /**
+ * Clase que permite manejar excepciones en el proyecto ciclotour
  *
  * @author Santiago Betancur
  */
-public class GrafoExcepcion extends Exception{
+public class GrafoExcepcion extends Exception {
 
     public GrafoExcepcion() {
     }
@@ -25,5 +26,5 @@ public class GrafoExcepcion extends Exception{
     public GrafoExcepcion(Throwable cause) {
         super(cause);
     }
-    
+
 }

@@ -37,14 +37,29 @@ import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.LabelOverlay;
 
 /**
+ * Calse controlador principal para realizar los eventos de entrada
  *
+ * @author carlos loaiza
  * @author Santiago Betancur
+ * @version V.8
+ *
  */
 @Named(value = "controladorGrafo")
 @Singleton
 public class ControladorGrafo implements Serializable {
 
     //Atributos
+    /**
+     * @author carlos loaiza
+     * @author Santiago Betancur Atribitos principales que contiene acceso a
+     * vertices y aristas Atributo con posibilidad de mostrar el grafo de la
+     * ruta corta y la rutas posibles de diferente color Atributo con acceso
+     * acrear municipio nuevo cuando se requiera Atributo boolean que ayuda a
+     * realizar las conexiones Atrubuto de ruta corta donde se almacena las
+     * rutas cortas posibles en determinado grafo Atributo de codigo inicio con
+     * acceso a la ruta incial del grafo Atributo de codigo final con acceso al
+     * punto de llegada del grafo
+     */
     private GrafoNoDirigido grafoND;
     private DefaultDiagramModel model;
     private DefaultDiagramModel mode2;
@@ -112,6 +127,10 @@ public class ControladorGrafo implements Serializable {
     }
 
     //PosConstuct
+    /**
+     * Constructor con anotación de PosConsttruct para realizar inicio de la
+     * aplicacion con los datos que se requieran
+     */
     @PostConstruct
     public void inicializar() {
         grafoND = new GrafoNoDirigido();
@@ -155,6 +174,10 @@ public class ControladorGrafo implements Serializable {
         pintarGrafo(grafoND);
 
     }
+
+    /**
+     * Metodo para inicializar grafo del parcial
+     */
     public void adicionarGrafoParcial() {
         grafoND = new GrafoNoDirigido();
 //        //llenado de vertices
@@ -198,6 +221,9 @@ public class ControladorGrafo implements Serializable {
 
     }
 
+    /**
+     * Medoto de prueba para garantizar busqueda de diferentes grafos en uno
+     */
     public void adicionPorDefecto() {
         grafoND = new GrafoNoDirigido();
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1,
@@ -255,31 +281,21 @@ public class ControladorGrafo implements Serializable {
         pintarGrafo(grafoND);
     }
 
+    /**
+     * Metodo que me pinta un grafo en la vista del proyecto
+     *
+     * @param grafo
+     */
     public void pintarGrafo(GrafoAbstract grafo) {
-        //int x = 4;
-        //int y = 4;
         model = new DefaultDiagramModel();
         model.setMaxConnections(-1);
         StraightConnector connector = new StraightConnector();
-        // model.getDefaultConnectionOverlays().add(new ArrowOverlay(20, 20, 1, 1));
         for (Vertice vertice : grafo.getVertices()) {
 
             //////////////////////////
             connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}"); //Color de lineas
 //            connector.setHoverPaintStyle("{strokeStyle:'blue'}"); //Color detras de linea
             /////////////////////////
-//            if (rutaCorta != null) {
-//                for (Vertice rutaCorta1 : rutaCorta) {
-//                    if (vertice.getCodigo() != rutaCorta1.getCodigo()) {
-//                        connector.setPaintStyle("{strokeStyle:'blue', lineWidth:3}"); //Color de lineas
-//                    } else {
-//                        connector.setPaintStyle("{strokeStyle:'red', lineWidth:3}"); //Color de lineas
-//                        break;
-//                    }
-//                }
-//            } else {
-//                connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}"); //Color de lineas
-//            }
 
             model.setDefaultConnector(connector);
             Element element = new Element(vertice);
@@ -299,6 +315,10 @@ public class ControladorGrafo implements Serializable {
             model.addElement(element);
         }
         //Pintar aristas
+        /**
+         * Ciclo que me permite ir buscando la arista correcta y pintarla con su
+         * respectivo color
+         */
         for (Arista ar : grafoND.getAristas()) {
             //Encuentro origen
             for (Element el : model.getElements()) {
@@ -372,6 +392,9 @@ public class ControladorGrafo implements Serializable {
         this.listaWs = listaWs;
     }
 
+    /**
+     * Metodo que permite pintar la ruta corta segun la ruta encontrada
+     */
     public void pintarRutaCorta() {
         //int x = 4;
         //int y = 4;
@@ -424,6 +447,10 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que en a traves de la vista adiciona un municipio requerido
+     *
+     */
     public void adicionarMunicipio() {
         grafoND.adicionarVertice(new Vertice(grafoND.getVertices().size() + 1, municipio));
         listados();
@@ -437,6 +464,12 @@ public class ControladorGrafo implements Serializable {
         municipio = new Municipio();
     }
 
+    /**
+     * Metodo que rectagulo para poder seleccionar el origen
+     *
+     * @param anchor
+     * @return retorna en la posicion del recuadro
+     */
     private EndPoint createRectangleEndPoint(EndPointAnchor anchor) {
         RectangleEndPoint endPoint = new RectangleEndPoint(anchor);
         endPoint.setScope("municipio");
@@ -457,6 +490,11 @@ public class ControladorGrafo implements Serializable {
         return endPoint;
     }
 
+    /**
+     * Metodo que realiza creacion de la conexión desde un origen a un detino
+     *
+     * @param event
+     */
     public void onConnect(ConnectEvent event) {
         if (!suspendEvent) {
             int origen = Integer.parseInt(event.getSourceElement().getId());
@@ -482,6 +520,11 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que realiza eliminacion de arirta de los origen y los destinos
+     *
+     * @param event
+     */
     public void onDisconnect(DisconnectEvent event) {
 
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Desconectado",
@@ -497,6 +540,11 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que modifica la arista para un nuevo origen y nueva arista
+     *
+     * @param event
+     */
     public void onConnectionChange(ConnectionChangeEvent event) {
         int origenAnt = Integer.parseInt(event.getOriginalSourceElement().getId());
         int destinoAnt = Integer.parseInt(event.getOriginalTargetElement().getId());
@@ -526,6 +574,12 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que adiciona destino en vista
+     *
+     * @param anchor
+     * @return retorna el circulo donde esta el detino
+     */
     private EndPoint createDotEndPoint(EndPointAnchor anchor) {
         DotEndPoint endPoint = new DotEndPoint(anchor);
         endPoint.setScope("municipio");
@@ -546,6 +600,11 @@ public class ControladorGrafo implements Serializable {
         return endPoint;
     }
 
+    /**
+     * Metodo que permite cambiar de peso en la arista
+     *
+     * @param event
+     */
     public void onRowEdit(RowEditEvent event) {
         Arista ar = ((Arista) event.getObject());
         FacesMessage msg = new FacesMessage("Arista Modificada", ar.toString());
@@ -555,6 +614,11 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que permite cancelar la edicion del peso en la arista en la vista
+     *
+     * @param event
+     */
     public void onRowCancel(RowEditEvent event) {
         Arista ar = ((Arista) event.getObject());
         FacesMessage msg = new FacesMessage("Edición  Cancelada", ar.toString());
@@ -575,6 +639,9 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Atributo que me permite activar el panel de ruta corta cuando lo requiera
+     */
     private boolean activarPanel = true;
 
     public boolean isActivarPanel() {
@@ -585,6 +652,9 @@ public class ControladorGrafo implements Serializable {
         this.activarPanel = activarPanel;
     }
 
+    /**
+     * Metodo que me permite reiniciar o refrescar toda la vista
+     */
     public void limpiarRutaCorta() {
         activarPanel = true;
         if (!grafoND.getAristas().isEmpty()) {
@@ -602,6 +672,11 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que me permite calcular la ruta corta para el grafo normal sin
+     * mejoras, Este metodo tiene codiciones de verifar aristas, verificar si es
+     * no conexo, si no hay ruta, o si la ruta ya y destino son iguales
+     */
     public void calcularRutaCorta() {
         if (codigoFinal != codigoInicio) {
             if (!grafoND.getAristas().isEmpty()) {
@@ -631,6 +706,11 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    /**
+     * Metodo que me permite buscar si el grafo es no conexo
+     *
+     * @return devuelve false si se identifica que es no conexo
+     */
     public boolean verificarNoConexo() {
         for (int i = 1; i <= grafoND.getVertices().size(); i++) {
             if (contarAdya(i) == 0) {
@@ -641,6 +721,9 @@ public class ControladorGrafo implements Serializable {
     }
 
     //nuevo
+    /**
+     * Atributo de tipo List que ayuda a guardar los niveles de cada vertice
+     */
     private List verticesConSuNivel;
 
     public List getVerticesConSuNivel() {
@@ -655,6 +738,11 @@ public class ControladorGrafo implements Serializable {
         verticesConSuNivel = listadosX();
     }
 
+    /**
+     * Metodo que retorna una lista de niveles
+     *
+     * @return List
+     */
     private List listadosX() {
         int cont = 0;
         List<String> nuevas = new ArrayList<>();
@@ -665,6 +753,12 @@ public class ControladorGrafo implements Serializable {
         return nuevas;
     }
 
+    /**
+     * Metodo que ayuda a buscar un vertice por su codigo
+     *
+     * @param codigo
+     * @return String
+     */
     public String consultarVerticeXCodigo(int codigo) {
         for (Vertice vertice : grafoND.getVertices()) {
             if (vertice.getCodigo() == codigo) {
@@ -674,6 +768,12 @@ public class ControladorGrafo implements Serializable {
         return "No se encuentra vertice";
     }
 
+    /**
+     * Metodo que busca los niveles de cada vertice
+     *
+     * @param indicador
+     * @return int
+     */
     private int contarAdya(int indicador) {
         int con = 0;
         for (Arista arista : grafoND.getAristas()) {
@@ -688,6 +788,9 @@ public class ControladorGrafo implements Serializable {
     }
 
     /////////////////////
+    /**
+     * Atributo donde se almacena el codigo que decea eliminar
+     */
     private int eliminarVer = 0;
 
     public int getEliminarVer() {
@@ -702,6 +805,11 @@ public class ControladorGrafo implements Serializable {
         borrarVertice(eliminarVer);
     }
 
+    /**
+     * Metodo que elimina el vertice segun el codigo de este
+     *
+     * @param codigo
+     */
     private void borrarVertice(int codigo) {
         for (int i = 0; i < grafoND.getVertices().size(); i++) {
             if (grafoND.getVertices().get(i).getCodigo() == codigo) {
@@ -713,6 +821,10 @@ public class ControladorGrafo implements Serializable {
     }
 
     //////////////////////////////
+    /**
+     * Atributos principales para editar el nombre, pox y poy del vetice segun
+     * su codigo.
+     */
     private int codigoEditado = 0;
     private String nombreEditado = "";
     private int posxEditado = 0;
@@ -754,6 +866,14 @@ public class ControladorGrafo implements Serializable {
         editarVertice(codigoEditado, nombreEditado, posxEditado, posyEditado);
     }
 
+    /**
+     * Metodo que edita el verice indicado segun su codigo
+     *
+     * @param codigo
+     * @param nombre
+     * @param posx
+     * @param posy
+     */
     private void editarVertice(int codigo, String nombre, int posx, int posy) {
         boolean validador = false;
         for (int i = 0; i < grafoND.getVertices().size(); i++) {
@@ -774,6 +894,9 @@ public class ControladorGrafo implements Serializable {
     }
 
     ///////////////////////////////////////
+    /**
+     * Metodo que calcula ruta corta del paracial
+     */
     public void calcularRutas() {
 
         if (codigoFinal != codigoInicio) {
@@ -784,13 +907,16 @@ public class ControladorGrafo implements Serializable {
                     dijstra.calcularRutasPosibles(grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
                     int pesoMin = Integer.MAX_VALUE;
                     if (dijstra.getRutas().size() > 0) {
+                        /**
+                         * Ciclo que busca el peso en la ruta mas corta y la
+                         * pinta
+                         */
                         for (List<Vertice> rutaN : dijstra.getRutas()) {
                             if (dijstra.obtenerPesoLista(rutaN) < pesoMin) {
                                 rutaCorta = rutaN;
                                 pesoMin = dijstra.obtenerPesoLista(rutaN);
                             }
                         }
-//                        rutaCorta = dijstra.getRutas().get(0);
                         pintarRutaCorta();
                         pintarGrafo(grafoND);
                         activarPanel = false;
@@ -808,7 +934,6 @@ public class ControladorGrafo implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             PrimeFaces.current().ajax().update("grwErrores");
         }
-
         listados();
     }
 

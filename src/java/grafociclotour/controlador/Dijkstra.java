@@ -14,11 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * @author Carlos loaiza
  * @author Santiago Betancur
+ * @version V.8
  */
 public class Dijkstra implements Serializable {
 
+    /**
+     * Atributo grafo donde se realiza extends a la clase GrafoAbstract para
+     * tener los verices y las arista Atributo nodoInicio y nodoFinal para tener
+     * la direccion de la ruta
+     */
     private GrafoNoDirigido grafo;
     private Vertice nodoInicio;
     private Vertice nodoFinal;
@@ -26,12 +32,23 @@ public class Dijkstra implements Serializable {
     public Dijkstra() {
     }
 
+    /**
+     * Constructos principal de clase de se solicita un grafo y la dirrecion de
+     * este.
+     *
+     * @param grafo
+     * @param nodoInicio
+     * @param nodoFinal
+     */
     public Dijkstra(GrafoNoDirigido grafo, Vertice nodoInicio, Vertice nodoFinal) {
         this.grafo = grafo;
         this.nodoInicio = nodoInicio;
         this.nodoFinal = nodoFinal;
     }
 
+    /**
+     * Atributo que ayuda a validar si la ruta esta en el grafo
+     */
     private boolean validadorRut;
 
     public boolean isValidadorRut() {
@@ -54,10 +71,19 @@ public class Dijkstra implements Serializable {
         /// se hace dijkstra hasta que todos los vertices estén marcados
         VerticeDijkstra antecesor = inicio;
         int contVertusados = 1;
+        /**
+         * Ciclo que permite recorrer segun sus vertices, y determinar la ruta
+         * mas corta del primer grafo
+         *
+         */
         while (contVertusados < grafo.getVertices().size()) {
             //se llenan las adyacencias del antecesor que no estén marcadas
             antecesor.llenarAdyacenciasVertice(grafo, listadoVerticesUsados);
             VerticeDijkstra menor = antecesor.obtenerAdyacenciaMenorPeso(listadoVerticesUsados);
+            /**
+             * Condicion que indica si la ruta ya fue encontrada, restar los
+             * nodos faltantes para poder continuar con el proceso.
+             */
             if (menor != null) {
                 menor.setUsado(true);//Inicio de error
                 listadoVerticesUsados.addAll(this.obtenerAdyacenciasNuevas(antecesor.getListadoAdyacencias(), listadoVerticesUsados));
@@ -73,7 +99,11 @@ public class Dijkstra implements Serializable {
         //hasta llenar la ruta empezando en el nodo final
         VerticeDijkstra destino = null;
         int codigoFianalAnt = nodoFinal.getCodigo();
-        VerticeDijkstra verificarFinal = obtenerVerticeAntecesorxCodigo(codigoFianalAnt, listadoVerticesUsados);;
+        VerticeDijkstra verificarFinal = obtenerVerticeAntecesorxCodigo(codigoFianalAnt, listadoVerticesUsados);
+        /**
+         * Condición que verifica si la ruta existe, para poder devolver la ruta
+         * más corta
+         */
         if (verificarFinal != null) {
             ruta.add(nodoFinal);
             int codigoAnt = nodoFinal.getCodigo();
@@ -89,6 +119,14 @@ public class Dijkstra implements Serializable {
         return ruta;
     }
 
+    /**
+     * Metodo que devuelve un VeriticeDijstra con su verticeAntecesor, su
+     * vértice, su estado de uso
+     *
+     * @param codigo
+     * @param lista
+     * @return VerticeDijkstra
+     */
     public VerticeDijkstra obtenerVerticeAntecesorxCodigo(int codigo, List<VerticeDijkstra> lista) {
         for (VerticeDijkstra vert : lista) {
             if (vert.getVertice().getCodigo() == codigo) {
@@ -98,6 +136,12 @@ public class Dijkstra implements Serializable {
         return null;
     }
 
+    /**
+     * Metodo que cuenta cuantos vértices estan en uso
+     *
+     * @param lista
+     * @return int la suma se los verices
+     */
     public int contarVerticesUsados(List<VerticeDijkstra> lista) {
         int cont = 0;
         for (VerticeDijkstra vert : lista) {
@@ -108,6 +152,13 @@ public class Dijkstra implements Serializable {
         return cont;
     }
 
+    /**
+     * Metodo que busca adyacencia de los verices
+     *
+     * @param listadoAdyacencias
+     * @param listadoVerticesUsados
+     * @return VerticeDijkstra
+     */
     public List<VerticeDijkstra> obtenerAdyacenciasNuevas(List<VerticeDijkstra> listadoAdyacencias, List<VerticeDijkstra> listadoVerticesUsados) {
         List<VerticeDijkstra> nuevas = new ArrayList<>();
         for (VerticeDijkstra vert : listadoAdyacencias) {
@@ -119,6 +170,8 @@ public class Dijkstra implements Serializable {
     }
 
     /**
+     * Metodo que busca todas la rutas posibles
+     *
      * @author Sebastian Gomez Quintero
      * @author Santiago Betancur V
      * @param verticeInicio
@@ -127,6 +180,9 @@ public class Dijkstra implements Serializable {
     public void calcularRutasPosibles(Vertice verticeInicio, Vertice verticeFin) {
         validadorRut = false;
         List<Vertice> ruta = new ArrayList<>();
+        /**
+         * Ciclo que buuca del grafo el grafo siguiente sus adyacencias
+         */
         for (Vertice verticeSiguiente : buscarVerices(verticeInicio)) {
             ruta.add(verticeInicio);
             calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);
@@ -138,6 +194,9 @@ public class Dijkstra implements Serializable {
         }
     }
 
+    /**
+     * Atributo de lista que almacena una lista de vertices
+     */
     private List<List<Vertice>> rutas = new ArrayList<>();
 
     public List<List<Vertice>> getRutas() {
@@ -148,17 +207,35 @@ public class Dijkstra implements Serializable {
         this.rutas = rutas;
     }
 
+    /**
+     * Metodo Recursivo que calcula todas las rutas posibles, realizado una
+     * busqueda vertice por vetices verificando sus siguientes determinando
+     * todas las rutas posibles
+     *
+     * @param nodo
+     * @param verticeFin
+     * @param verticeInicio
+     * @param ruta
+     */
     public void calcularRutasPosibles(Vertice nodo, Vertice verticeFin, Vertice verticeInicio, List<Vertice> ruta) {
-//        buscarVerices(nodo);        
         if (nodo != verticeFin) {
             if (!validarExistenciaRuta(ruta, nodo)) {
                 ruta.add(nodo);
+                /**
+                 * Ciclo que me permite buscar los recorridos de los vertices
+                 * adyacentes
+                 */
                 for (Vertice verticeSiguiente : buscarVerices(nodo)) {//busca entre los vertices adyacentes para buscar sus recoridos 
                     calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);
                     if (buscarVerices(nodo).size() > 1) {
-                        if (ruta.get(ruta.size() - 1) == verticeFin) {//en duda
+                        if (ruta.get(ruta.size() - 1) == verticeFin) {
                             adicionarEnRutas(ruta, verticeFin, verticeInicio);
                         }
+                        /**
+                         * Ciclo que borra todos los vertices de lista para
+                         * poder continuidad a las demas busquedas, pregusntado
+                         * si se encuentra en lista para borrar
+                         */
                         for (int i = 0; i < ruta.size(); i++) {
                             if (ruta.get(i) == nodo) {//borrar todos los sigientes al nodo en la ruta 
                                 for (int o = ruta.size() - 1; o > i; o--) {
@@ -176,6 +253,13 @@ public class Dijkstra implements Serializable {
         }
     }
 
+    /**
+     * Metodo boolean que de termina la existencia de la ruta
+     *
+     * @param ruta
+     * @param nodo
+     * @return true o flase
+     */
     public boolean validarExistenciaRuta(List<Vertice> ruta, Vertice nodo) {
         for (Vertice verticeDeRuta : ruta) {
             if (nodo == verticeDeRuta) {
@@ -185,13 +269,28 @@ public class Dijkstra implements Serializable {
         return false;
     }
 
+    /**
+     * Metodo adiciona todas las rutas posibles en una lista de rutas
+     *
+     * @param ruta
+     * @param verticeFin
+     * @param verticeInicio
+     */
     public void adicionarEnRutas(List<Vertice> ruta, Vertice verticeFin, Vertice verticeInicio) {//valida existencia en rutas y adiciona 
         boolean añadir = true;
         if (ruta != null) {
             if (rutas != null) {
+                /**
+                 * Ciclo que recorre las rutas
+                 */
                 for (List<Vertice> rutasGuardadas : rutas) {
                     int iguales = 0;// cuantos iguales hay por ruta guardada y la ruta que me mandaron
                     int sum = 0;
+                    /**
+                     * Ciclo que recorre las rutasGuardadas he indica si la ruta
+                     * ya si no esta dara acceso para guradar la nueva ruta
+                     *
+                     */
                     for (Vertice rutaG : rutasGuardadas) {
                         if (rutaG.getCodigo() == ruta.get(sum).getCodigo()) {
                             iguales++;
@@ -209,6 +308,11 @@ public class Dijkstra implements Serializable {
             if (añadir) {
                 if (ruta.get(0).getCodigo() == verticeInicio.getCodigo() && ruta.get(ruta.size() - 1).getCodigo() == verticeFin.getCodigo()) {
                     List<Vertice> rutaGuardar = new ArrayList<>();
+                    /**
+                     * Ciclo que recorre la ruta y añade un nuevo objeto de tipo
+                     * vertices a la a lista de rutaGuardar para depues darla
+                     * toda esa ruta a la lista principal de rutas.
+                     */
                     for (Vertice ver : ruta) {
                         rutaGuardar.add(new Vertice(ver.getCodigo(), ver.getDato()));
                     }
@@ -219,6 +323,13 @@ public class Dijkstra implements Serializable {
 
     }
 
+    /**
+     * Metodo que busca arista segun el nodo que tenga como parametro,
+     * devolviendo una lista de aristas del nodo buscado.
+     *
+     * @param nodo
+     * @return
+     */
     public List<Arista> buscarAristas(Vertice nodo) {
         List<Arista> aristasDeNodo = new ArrayList<>();
         for (Arista arista : grafo.getAristas()) {
@@ -229,6 +340,12 @@ public class Dijkstra implements Serializable {
         return aristasDeNodo;
     }
 
+    /**
+     * Metodo que busca verices segun el nodo buscado devolviendo sus vertices
+     *
+     * @param nodo
+     * @return List vérice
+     */
     public List<Vertice> buscarVerices(Vertice nodo) {
         List<Vertice> verticesDeNodo = new ArrayList<>();
         for (Arista arista : grafo.getAristas()) {
@@ -241,6 +358,12 @@ public class Dijkstra implements Serializable {
         return verticesDeNodo;
     }
 
+    /**
+     * Metodo que busca un vertice solo por su codigo en la lista de vertices
+     *
+     * @param codigo
+     * @return
+     */
     public Vertice obtenerVerticexCodigo(int codigo) {
         for (Vertice vert : grafo.getVertices()) {
             if (vert.getCodigo() == codigo) {
@@ -250,6 +373,12 @@ public class Dijkstra implements Serializable {
         return null;
     }
 
+    /**
+     * Metodo que busca el peso de cada ruta que se le pasa por parametro
+     *
+     * @param ruta
+     * @return
+     */
     public int obtenerPesoLista(List<Vertice> ruta) {
         int peso = 0;
         if (ruta != null) {
@@ -263,7 +392,6 @@ public class Dijkstra implements Serializable {
                     }
 
                 }
-
                 grafo.getAristas();
             }
         }

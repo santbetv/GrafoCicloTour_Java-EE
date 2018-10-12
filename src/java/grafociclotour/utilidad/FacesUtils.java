@@ -46,7 +46,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- * JSF utilities.
+ * Clase que me permite comunicar diferentes controladores en vistas JSF
+ * utilities.
  */
 public class FacesUtils implements Serializable {
 

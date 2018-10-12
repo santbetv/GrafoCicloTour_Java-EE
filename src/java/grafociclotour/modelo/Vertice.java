@@ -9,10 +9,17 @@ import java.io.Serializable;
 
 /**
  *
+ * @author Carlos Loaiza
  * @author Santiago Betancur
+ * @version V.8
  */
 public class Vertice implements Serializable {
 
+    /**
+     * Atributo de tipo codigo que va dando de manera ascendente segun su oreden
+     * de creacion un entero Atributo dato que tiene una realación de tipo
+     * composicion con municipio
+     */
     private int codigo;
     private Municipio dato;
 

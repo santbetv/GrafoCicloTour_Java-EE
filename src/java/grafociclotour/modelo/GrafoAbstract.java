@@ -11,11 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Clase que ayuda en la herencia de datos obteniendo de esta todos los verices
+ * y aristas
  *
+ * @author Carlos loaiza
  * @author Santiago Betancur
+ * @Version V.8
  */
 public abstract class GrafoAbstract implements Serializable {
 
+    /**
+     * Atributos principales que crear una lista de verices y aristas
+     */
     private List<Vertice> vertices;
     private List<Arista> aristas;
 
@@ -73,7 +80,7 @@ public abstract class GrafoAbstract implements Serializable {
     public void eliminarAristas() {
         aristas.clear();
     }
-    
+
     public Vertice obtenerVerticexNombre(String nombre) {
         for (Vertice vert : vertices) {
             if (vert.getDato().getNombre().compareTo(nombre) == 0) {
