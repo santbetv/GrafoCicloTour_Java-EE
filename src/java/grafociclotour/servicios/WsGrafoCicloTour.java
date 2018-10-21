@@ -14,6 +14,7 @@ import grafociclotour.controlador.Dijkstra;
 import grafociclotour.modelo.Arista;
 import grafociclotour.modelo.Municipio;
 import grafociclotour.modelo.Vertice;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,6 +23,9 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 
 /**
+ *
+ * Clase principal que indica la conexión en un WS por SOAP
+ *
  * @author Santiago Betancur
  */
 @WebService(serviceName = "WsGrafoCicloTour")
@@ -58,15 +62,16 @@ public class WsGrafoCicloTour {
      * Metodeo creea un vertice en el Web Service
      *
      * @author Santiago Betancur
-     * @Version V.8
-     * @param municipio
+     * @Version V.8 //@param municipio
+     *
+     * @param nombre
+     * @param posx
+     * @param posy
      * @return un mensaje de indicando la creacion del vertice
      */
     @WebMethod(operationName = "crearVertice")
-    public String crearVertice(@WebParam(name = "municipio") Municipio municipio) {
-        controlGrafo.getGrafoND().adicionarVertice(
-                new Vertice(controlGrafo.getGrafoND().getVertices().size() + 1,
-                        municipio));
+    public String crearVertice(@WebParam(name = "nombre") String nombre, @WebParam(name = "posx") int posx, @WebParam(name = "posy") int posy) {
+        controlGrafo.getGrafoND().adicionarVertice(new Vertice(controlGrafo.getGrafoND().getVertices().size() + 1, new Municipio(nombre, posx, posy)));
         controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
         return "Vertice creado";
     }
@@ -74,7 +79,7 @@ public class WsGrafoCicloTour {
     /**
      *
      * @author Santiago Betancur
-     * @Version V.8
+     *
      * @param codigo
      * @return retorna un mesaje de vertice borrado
      */
@@ -246,5 +251,42 @@ public class WsGrafoCicloTour {
             }
         }
         return controlGrafo.getRutaCorta();
+    }
+
+    @WebMethod(operationName = "obtenerRutaMasCortaXCodigoRecursiva")
+    public List<Vertice> obtenerRutaMasCortaXCodigoRecursiva(@WebParam(name = "inicio") int inicio, @WebParam(name = "destino") int destino) {
+        if (destino != inicio) {
+            if (!controlGrafo.getGrafoND().getAristas().isEmpty()) {
+                if (controlGrafo.verificarNoConexo()) {
+                    Dijkstra dijstra = new Dijkstra(controlGrafo.getGrafoND(), controlGrafo.getGrafoND().obtenerVerticexCodigo(inicio), controlGrafo.getGrafoND().obtenerVerticexCodigo(destino));
+                    controlGrafo.setRutaCorta(dijstra.calcularRutasPosiblesWS(dijstra.obtenerVerticexCodigo(inicio), dijstra.obtenerVerticexCodigo(destino)));
+                    controlGrafo.pintarGrafo(controlGrafo.getGrafoND());
+                    controlGrafo.pintarRutaCorta();
+                    controlGrafo.setActivarPanel(false);
+                }
+            }
+        }
+        return controlGrafo.getRutaCorta();
+    }
+
+    @WebMethod(operationName = "menorVerticeDeUnVerice")
+    public List<Arista> menorVerticeDeUnVerice(@WebParam(name = "buscarVertice") int buscarVertice,
+            @WebParam(name = "buscarMenor") int buscarMenor) {
+        List<Arista> listarAristas = new ArrayList<>();
+        List<Arista> listarAristaConPesoMenor = new ArrayList<>();
+        for (Arista arista : controlGrafo.getGrafoND().getAristas()) {
+            if (arista.getOrigen() == buscarVertice) {
+                listarAristas.add(arista);
+            }
+            if (arista.getDestino() == buscarVertice) {
+                listarAristas.add(arista);
+            }
+        }
+        for (Arista listarArista : listarAristas) {
+            if (listarArista.getPeso() <= buscarMenor) {
+                listarAristaConPesoMenor.add(listarArista);
+            }
+        }
+        return listarAristaConPesoMenor;
     }
 }

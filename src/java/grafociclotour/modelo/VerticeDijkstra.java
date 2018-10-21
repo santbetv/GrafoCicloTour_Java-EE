@@ -180,7 +180,7 @@ public class VerticeDijkstra implements Serializable {
     }
 
     /**
-     * Metodo que obtiene la adyacencia de menor peso y verifia con una mejora
+     * Metodo que obtiene la adyacencia de menor peso y verifica con una mejora
      * de con la varible prueba si no tiene adyacencia, encontro la ruta
      * verificar todos los demas nodos que faltan por visitar para dar
      * finalización a la busqueda

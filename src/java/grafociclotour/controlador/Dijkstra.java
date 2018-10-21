@@ -181,17 +181,31 @@ public class Dijkstra implements Serializable {
         validadorRut = false;
         List<Vertice> ruta = new ArrayList<>();
         /**
-         * Ciclo que buuca del grafo el grafo siguiente sus adyacencias
+         * Ciclo que busca del grafo el grafo siguiente a sus adyacencias
          */
-        for (Vertice verticeSiguiente : buscarVerices(verticeInicio)) {
+        for (Vertice verticeSiguiente : buscarVerices(verticeInicio)) {//Se realiza la busqueda de los vertices siguientes de cada nodo
             ruta.add(verticeInicio);
-            calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);
-            adicionarEnRutas(ruta, verticeFin, verticeInicio);
+            calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);//Envia el vertice siguiente al inicial, llamando el metodo recursivo
+            //  adicionarEnRutas(ruta, verticeFin, verticeInicio);
             ruta.clear();
         }
         if (rutas != null) {
             validadorRut = true;
         }
+    }
+
+    public List<Vertice> calcularRutica() {
+        List<Vertice> ruta = new ArrayList<>();
+        int pesoMin = Integer.MAX_VALUE;
+        if (rutas.size() > 0) {
+            for (List<Vertice> rutaN : rutas) {
+                if (obtenerPesoLista(rutaN) < pesoMin) {
+                    ruta = rutaN;
+                    pesoMin = obtenerPesoLista(rutaN);
+                }
+            }
+        }
+        return ruta;
     }
 
     /**
@@ -219,25 +233,16 @@ public class Dijkstra implements Serializable {
      */
     public void calcularRutasPosibles(Vertice nodo, Vertice verticeFin, Vertice verticeInicio, List<Vertice> ruta) {
         if (nodo != verticeFin) {
-            if (!validarExistenciaRuta(ruta, nodo)) {
+            if (!validarExistenciaRuta(ruta, nodo)) {//Verifica que el nodo no se encuentre en la ruta
                 ruta.add(nodo);
-                /**
-                 * Ciclo que me permite buscar los recorridos de los vertices
-                 * adyacentes
-                 */
                 for (Vertice verticeSiguiente : buscarVerices(nodo)) {//busca entre los vertices adyacentes para buscar sus recoridos 
                     calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);
                     if (buscarVerices(nodo).size() > 1) {
-                        if (ruta.get(ruta.size() - 1) == verticeFin) {
-                            adicionarEnRutas(ruta, verticeFin, verticeInicio);
-                        }
-                        /**
-                         * Ciclo que borra todos los vertices de lista para
-                         * poder continuidad a las demas busquedas, pregusntado
-                         * si se encuentra en lista para borrar
-                         */
-                        for (int i = 0; i < ruta.size(); i++) {
-                            if (ruta.get(i) == nodo) {//borrar todos los sigientes al nodo en la ruta 
+//                        if (ruta.get(ruta.size() - 1) == verticeFin) {
+//                            adicionarEnRutas(ruta, verticeFin, verticeInicio);
+//                        }
+                        for (int i = 0; i < ruta.size(); i++) { //Recorra toda la ruta
+                            if (ruta.get(i) == nodo) {//borrar todos los sigientes anteriores al nodo en la ruta 
                                 for (int o = ruta.size() - 1; o > i; o--) {
                                     ruta.remove(o);
                                 }
@@ -281,7 +286,8 @@ public class Dijkstra implements Serializable {
         if (ruta != null) {
             if (rutas != null) {
                 /**
-                 * Ciclo que recorre las rutas
+                 * Ciclo que recorre las rutas verificando si la ruta que me
+                 * mandaron ya esta en la rutas
                  */
                 for (List<Vertice> rutasGuardadas : rutas) {
                     int iguales = 0;// cuantos iguales hay por ruta guardada y la ruta que me mandaron
@@ -346,7 +352,7 @@ public class Dijkstra implements Serializable {
      * @param nodo
      * @return List vérice
      */
-    public List<Vertice> buscarVerices(Vertice nodo) {
+    public List<Vertice> buscarVerices(Vertice nodo) {//Busca todos los vertices de cada nodo
         List<Vertice> verticesDeNodo = new ArrayList<>();
         for (Arista arista : grafo.getAristas()) {
             if (arista.getOrigen() == nodo.getCodigo()) {
@@ -364,7 +370,7 @@ public class Dijkstra implements Serializable {
      * @param codigo
      * @return
      */
-    public Vertice obtenerVerticexCodigo(int codigo) {
+    public Vertice obtenerVerticexCodigo(int codigo) {//Busca el vertice por codigo indicado
         for (Vertice vert : grafo.getVertices()) {
             if (vert.getCodigo() == codigo) {
                 return vert;
@@ -396,5 +402,51 @@ public class Dijkstra implements Serializable {
             }
         }
         return peso;
+    }
+
+    public List<Vertice> calcularRutasPosiblesWS(Vertice verticeInicio, Vertice verticeFin) {
+        validadorRut = false;
+        List<Vertice> ruta = new ArrayList<>();//se crea una ruta para guardar las posibles rutas temporalmente y agregarlas a la lista de rutas
+        for (Vertice verticeSiguiente : buscarVerices(verticeInicio)) {//recorrel las adyacencias del inicio
+            ruta.add(verticeInicio);//lo añade a la primera 
+            calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);//calcula las rutas posibles
+            adicionarEnRutas(ruta, verticeFin, verticeInicio);// se adiciona la ruta en la lista 
+            ruta.clear();//se limpia la ruta temporal
+        }
+        if (rutas != null) {//se valida que las rutas sea diferente de null
+            validadorRut = true;//se usa para saber si hay una ruta 
+        }
+        List<Vertice> rutaCorta = new ArrayList<>();
+        int pesoMin = Integer.MAX_VALUE;
+        for (List<Vertice> rutaN : rutas) {//se recore ra lista de rutas
+            if (obtenerPesoLista(rutaN) < pesoMin) {//se valida si la ruta es mas optima que la anterior y se guarda en la ruta a mostrar
+                rutaCorta = rutaN;
+                pesoMin = obtenerPesoLista(rutaN);//se calcula el peso de la ruta 
+            }
+        }
+        return rutaCorta;
+    }
+
+    public List<Vertice> calcularRutaMasLarga(Vertice verticeInicio, Vertice verticeFin) {
+        validadorRut = false;
+        List<Vertice> ruta = new ArrayList<>();//se crea una ruta para guardar las posibles rutas temporalmente y agregarlas a la lista de rutas
+        for (Vertice verticeSiguiente : buscarVerices(verticeInicio)) {//recorrel las adyacencias del inicio
+            ruta.add(verticeInicio);//lo añade a la primera 
+            calcularRutasPosibles(verticeSiguiente, verticeFin, verticeInicio, ruta);//calcula las rutas posibles
+            adicionarEnRutas(ruta, verticeFin, verticeInicio);// se adiciona la ruta en la lista 
+            ruta.clear();//se limpia la ruta temporal
+        }
+        if (rutas != null) {//se valida que las rutas sea diferente de null
+            validadorRut = true;//se usa para saber si hay una ruta 
+        }
+        List<Vertice> rutaMasLarga = new ArrayList<>();
+        int pesoMin = Integer.MIN_VALUE;
+        for (List<Vertice> rutaN : rutas) {//se recore ra lista de rutas
+            if (obtenerPesoLista(rutaN) > pesoMin) {//se valida si la ruta es mas optima que la anterior y se guarda en la ruta a mostrar
+                rutaMasLarga = rutaN;
+                pesoMin = obtenerPesoLista(rutaN);//se calcula el peso de la ruta 
+            }
+        }
+        return rutaMasLarga;
     }
 }

@@ -14,6 +14,7 @@ import grafociclotour.modelo.Vertice;
 import grafociclotour.utilidad.JsfUtil;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -37,7 +38,7 @@ import org.primefaces.model.diagram.endpoint.RectangleEndPoint;
 import org.primefaces.model.diagram.overlay.LabelOverlay;
 
 /**
- * Calse controlador principal para realizar los eventos de entrada
+ * Clase controlador principal para realizar los eventos de entrada
  *
  * @author carlos loaiza
  * @author Santiago Betancur
@@ -50,15 +51,17 @@ public class ControladorGrafo implements Serializable {
 
     //Atributos
     /**
+     * Atribitos principales que contiene acceso a vertices y aristas Atributo
+     * con posibilidad de mostrar el grafo de la ruta corta y la rutas posibles
+     * de diferente color Atributo con acceso acrear municipio nuevo cuando se
+     * requiera Atributo boolean que ayuda a realizar las conexiones Atrubuto de
+     * ruta corta donde se almacena las rutas cortas posibles en determinado
+     * grafo Atributo de codigo inicio con acceso a la ruta incial del grafo
+     * Atributo de codigo final con acceso al punto de llegada del grafo
+     *
      * @author carlos loaiza
-     * @author Santiago Betancur Atribitos principales que contiene acceso a
-     * vertices y aristas Atributo con posibilidad de mostrar el grafo de la
-     * ruta corta y la rutas posibles de diferente color Atributo con acceso
-     * acrear municipio nuevo cuando se requiera Atributo boolean que ayuda a
-     * realizar las conexiones Atrubuto de ruta corta donde se almacena las
-     * rutas cortas posibles en determinado grafo Atributo de codigo inicio con
-     * acceso a la ruta incial del grafo Atributo de codigo final con acceso al
-     * punto de llegada del grafo
+     * @author Santiago Betancur
+     *
      */
     private GrafoNoDirigido grafoND;
     private DefaultDiagramModel model;
@@ -218,6 +221,7 @@ public class ControladorGrafo implements Serializable {
         grafoND.getAristas().add(new Arista(2, 3, 10));
 
         pintarGrafo(grafoND);
+        activarPanel = true;
 
     }
 
@@ -279,6 +283,7 @@ public class ControladorGrafo implements Serializable {
         grafoND.getAristas().add(new Arista(13, 14, 3));
         grafoND.getAristas().add(new Arista(15, 13, 2));
         pintarGrafo(grafoND);
+        activarPanel = true;
     }
 
     /**
@@ -293,10 +298,9 @@ public class ControladorGrafo implements Serializable {
         for (Vertice vertice : grafo.getVertices()) {
 
             //////////////////////////
-            connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}"); //Color de lineas
-//            connector.setHoverPaintStyle("{strokeStyle:'blue'}"); //Color detras de linea
-            /////////////////////////
-
+//            connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}"); //Color de lineas
+////            connector.setHoverPaintStyle("{strokeStyle:'blue'}"); //Color detras de linea
+//            /////////////////////////
             model.setDefaultConnector(connector);
             Element element = new Element(vertice);
             element.setX(String.valueOf(vertice.getDato().getPosx()) + "em");
@@ -316,8 +320,13 @@ public class ControladorGrafo implements Serializable {
         }
         //Pintar aristas
         /**
-         * Ciclo que me permite ir buscando la arista correcta y pintarla con su
-         * respectivo color
+         * @return Ciclo que me permite ir buscando la arista correcta y
+         * pintarla con su respectivo color
+         */
+        /**
+         *
+         * @see prueba de muestra
+         *
          */
         for (Arista ar : grafoND.getAristas()) {
             //Encuentro origen
@@ -325,37 +334,12 @@ public class ControladorGrafo implements Serializable {
                 if (el.getId().compareTo(String.valueOf(ar.getOrigen())) == 0) {
                     for (Element elDes : model.getElements()) {
                         if (elDes.getId().compareTo(String.valueOf(ar.getDestino())) == 0) {
-                            ///
-//                            if (!rutaCorta.isEmpty()) {
-//                                for (Vertice rutaCorta1 : rutaCorta) {
-//                                    if (el.getId().compareTo(String.valueOf(rutaCorta1.getCodigo())) == 0) {
-//                                        for (Vertice rutaCorta2 : rutaCorta) {
-//                                            if (elDes.getId().compareTo(String.valueOf(rutaCorta2.getCodigo())) == 0) {
-//                                                Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
-//                                                conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-//                                                connector.setPaintStyle("{strokeStyle:'red', lineWidth:3}");
-//                                                conn.setConnector(connector);
-//                                                model.connect(conn);
-//                                                break;
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                                if (verificarOriVer(Integer.parseInt(el.getId())) == false || verificarDesVer(Integer.parseInt(elDes.getId())) == false) {
-//                                    Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
-//                                    conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-//                                    connector.setPaintStyle("{strokeStyle:'green', lineWidth:3}");
-//                                    conn.setConnector(connector);
-//                                    model.connect(conn);
-//                                }
-//                            } else {
                             Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
                             conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
-                            connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}");
+//                            connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}");
                             conn.setConnector(connector);
                             model.connect(conn);
                             break;
-//                            }
                         }
                     }
                 }
@@ -898,30 +882,23 @@ public class ControladorGrafo implements Serializable {
      * Metodo que calcula ruta corta del paracial
      */
     public void calcularRutas() {
-
         if (codigoFinal != codigoInicio) {
             if (!grafoND.getAristas().isEmpty()) {
                 if (verificarNoConexo()) {
                     Dijkstra dijstra = new Dijkstra(grafoND, grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
                     List<Vertice> ruta = new ArrayList<>();
                     dijstra.calcularRutasPosibles(grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
-                    int pesoMin = Integer.MAX_VALUE;
                     if (dijstra.getRutas().size() > 0) {
-                        /**
-                         * Ciclo que busca el peso en la ruta mas corta y la
-                         * pinta
-                         */
-                        for (List<Vertice> rutaN : dijstra.getRutas()) {
-                            if (dijstra.obtenerPesoLista(rutaN) < pesoMin) {
-                                rutaCorta = rutaN;
-                                pesoMin = dijstra.obtenerPesoLista(rutaN);
-                            }
-                        }
+                        rutaCorta = dijstra.calcularRutasPosiblesWS(grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
                         pintarRutaCorta();
                         pintarGrafo(grafoND);
+                        buscarAristaRutaCorta();
+                        buscarYPintarRuta();
                         activarPanel = false;
+
                     } else {
                         JsfUtil.addErrorMessage("Sin ruta");
+                        activarPanel = true;
                     }
                 } else {
                     JsfUtil.addErrorMessage("Se identifica grafo NO conexo, Cambiar a No dirigido");
@@ -937,4 +914,144 @@ public class ControladorGrafo implements Serializable {
         listados();
     }
 
+    public void calcularRutaMasLarga() {
+        if (codigoFinal != codigoInicio) {
+            if (!grafoND.getAristas().isEmpty()) {
+                if (verificarNoConexo()) {
+                    Dijkstra dijstra = new Dijkstra(grafoND, grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
+                    List<Vertice> ruta = new ArrayList<>();
+                    dijstra.calcularRutasPosibles(grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
+                    if (dijstra.getRutas().size() > 0) {
+                        rutaCorta = dijstra.calcularRutaMasLarga(grafoND.obtenerVerticexCodigo(codigoInicio), grafoND.obtenerVerticexCodigo(codigoFinal));
+                        pintarRutaCorta();
+                        pintarGrafo(grafoND);
+                        buscarAristaRutaCorta();
+                        buscarYPintarRuta();
+                        activarPanel = false;
+
+                    } else {
+                        JsfUtil.addErrorMessage("Sin ruta");
+                        activarPanel = true;
+                    }
+                } else {
+                    JsfUtil.addErrorMessage("Se identifica grafo NO conexo, Cambiar a No dirigido");
+                }
+            } else {
+                JsfUtil.addErrorMessage("Sin Aristas en CicloTour");
+            }
+        } else {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Origen y Destino no pueden ser iguales", "Origen y Destino no pueden ser iguales");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            PrimeFaces.current().ajax().update("grwErrores");
+        }
+        listados();
+    }
+
+    public void buscarYPintarRuta() {
+        StraightConnector connector = new StraightConnector();
+        for (Element ele : model.getElements()) {
+            ele.setStyleClass("ui-diagram-element");
+            for (Vertice pintaRuta : rutaCorta) {
+                if (ele.getData().toString().compareTo(pintaRuta.toString()) == 0) {
+                    ele.setStyleClass("ui-diagram-element-busc");
+                    for (int i = 0; i < ele.getEndPoints().size(); i++) {
+                        ele.getEndPoints().get(i).setStyle("{fillStyle:'red'}");
+                    }
+                }
+            }
+        }
+        //Pintar aristas
+        for (Arista ar : listaDeAristasRutaCorta) {
+            //Encuentro origen
+            for (Element el : model.getElements()) {
+                if (el.getId().compareTo(String.valueOf(ar.getOrigen())) == 0) {
+                    for (Element elDes : model.getElements()) {
+                        if (elDes.getId().compareTo(String.valueOf(ar.getDestino())) == 0) {
+                            Connection conn = new Connection(el.getEndPoints().get(0), elDes.getEndPoints().get(1));
+                            conn.getOverlays().add(new LabelOverlay(String.valueOf(ar.getPeso()), "flow-label", 0.5));
+                            connector.setPaintStyle("{strokeStyle:'yellow', lineWidth:3}");
+                            conn.setConnector(connector);
+                            model.connect(conn);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    List<Arista> listaDeAristasRutaCorta = new ArrayList<>();
+
+    public void buscarAristaRutaCorta() {
+        listaDeAristasRutaCorta.clear();
+        int valor = 0;
+        for (int i = 0; i < rutaCorta.size(); i++) {
+            valor = i;
+            if ((valor + 1) != rutaCorta.size()) {
+                listaDeAristasRutaCorta.add(buscarAristas(rutaCorta.get(i), rutaCorta.get(valor + 1)));
+            }
+        }
+    }
+
+    public Arista buscarAristas(Vertice origen, Vertice destino) {
+        for (Arista arista : grafoND.getAristas()) {
+            if ((arista.getOrigen() == origen.getCodigo() && arista.getDestino() == destino.getCodigo())
+                    || (arista.getDestino() == origen.getCodigo() && arista.getOrigen() == destino.getCodigo())) {
+                return arista;
+            }
+        }
+        return null;
+    }
+
+    private int bucarVer = 0;
+    private int buscarMenor = 0;
+    private List<Arista> menoresDeUnVertice = new ArrayList<>();
+
+    public List<Arista> getMenoresDeUnVertice() {
+        return menoresDeUnVertice;
+    }
+
+    public void setMenoresDeUnVertice(List<Arista> menoresDeUnVertice) {
+        this.menoresDeUnVertice = menoresDeUnVertice;
+    }
+
+    public int getBucarVer() {
+        return bucarVer;
+    }
+
+    public void setBucarVer(int bucarVer) {
+        this.bucarVer = bucarVer;
+    }
+
+    public int getBuscarMenor() {
+        return buscarMenor;
+    }
+
+    public void setBuscarMenor(int buscarMenor) {
+        this.buscarMenor = buscarMenor;
+    }
+
+    public void menorAristaDeUnVertice() {
+        menoresDeUnVertice.addAll(menorVerticeDeUnVerice(bucarVer, buscarMenor));
+    }
+
+    private List<Arista> menorVerticeDeUnVerice(int buscarVertice, int buscarMenor) {
+        List<Arista> listarAristas = new ArrayList<>();
+        List<Arista> listarAristaConPesoMenor = new ArrayList<>();
+        for (Arista arista : getGrafoND().getAristas()) {
+            if (arista.getOrigen() == buscarVertice) {
+                listarAristas.add(arista);
+            }
+            if (arista.getDestino() == buscarVertice) {
+                listarAristas.add(arista);
+            }
+        }
+        for (Arista listarArista : listarAristas) {
+            if (listarArista.getPeso() <= buscarMenor) {
+                listarAristaConPesoMenor.add(listarArista);
+            }
+        }
+        menoresDeUnVertice.clear();
+        return listarAristaConPesoMenor;
+    }
 }
